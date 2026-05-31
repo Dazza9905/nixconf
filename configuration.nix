@@ -11,6 +11,8 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./modules/zen.nix
+      #./modules/hyprland.nix
+      ./modules/plasma.nix
     ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -50,25 +52,32 @@
     LC_TIME = "sk_SK.UTF-8";
   };
 
-  # Enable the X11 windowing system.
-  # You can disable this if you're only using the Wayland session.
-  services.xserver.enable = true;
 
-  # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
 
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-  };
+  # programs.hyprland = {
+    # enable = true;
+    #withUWSM = true; # recommended for most users
+    #xwayland.enable = true; # Xwayland can be disabled.
+    #nvidiaPatches = true;
+
+  # };
+
+  # services.greetd = {
+  #   enable = true;
+  #   settings = rec {
+  #     initial_session = {
+  #       command = "hyprland > /dev/null 2>&1";
+  #       user = "dazza";
+  #     };
+  #     default_session = initial_session;
+  #   };
+  # };
 
   #bluetooth
   hardware.bluetooth = {
-  enable = true;
-  powerOnBoot = false;
-};
+    enable = true;
+    powerOnBoot = false;
+  };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -103,13 +112,24 @@
       github-cli
       yazi
       neovim
-      steam
       lazygit
+      btop
+      kitty
     ];
   };
 
   # Install firefox.
   programs.firefox.enable = true;
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
+    extraCompatPackages = with pkgs; [
+      proton-ge-bin
+    ];
+  };
+  programs.gamemode.enable = true;
+
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
