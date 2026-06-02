@@ -1,29 +1,12 @@
 {
-  description = "My first flake, YIPE!";
-
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-26.05";
-    zen-browser = {
-      url = "github:youwen5/zen-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    riff-src = {
-      url = "github:diegovsky/riff";
-      flake = false;
-    };
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    import-tree.url = "github:vic/import-tree";
+
+    wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
   };
 
-  outputs = inputs@{ self, nixpkgs, ... }:
-  let
-    lib = nixpkgs.lib;
-  in {
-    nixosConfigurations = {
-      flow-z13 = lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
-        modules = [ ./configuration.nix ];
-      };
-    };
-  };
+  outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);
 }
