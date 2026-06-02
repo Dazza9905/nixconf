@@ -13,6 +13,7 @@
       ./modules/zen.nix
       #./modules/hyprland.nix
       ./modules/plasma.nix
+      ./modules/riff.nix
     ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -52,7 +53,21 @@
     LC_TIME = "sk_SK.UTF-8";
   };
 
+  hardware.graphics.enable = true;
+  hardware.nvidia.open = true;  # see the note above
 
+
+  services.xserver.videoDrivers = [
+    "modesetting"
+    "nvidia"
+  ];
+
+  hardware.nvidia.prime = {
+    offload.enable = true;
+    offload.enableOffloadCmd = true;
+    intelBusId = "PCI:0@0:2:0";
+    nvidiaBusId = "PCI:1@0:0:0";
+  };
 
   # programs.hyprland = {
     # enable = true;
@@ -115,6 +130,9 @@
       lazygit
       btop
       kitty
+      anki
+      vesktop
+      (import ./pkgs/riff.nix { inherit pkgs inputs; })
     ];
   };
 
@@ -130,6 +148,10 @@
   };
   programs.gamemode.enable = true;
 
+  programs.fish.enable = true;
+  users.extraUsers.dazza = {
+    shell = pkgs.fish;
+  };  
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;

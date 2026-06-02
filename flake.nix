@@ -7,6 +7,11 @@
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    riff-src = {
+      url = "github:diegovsky/riff";
+      flake = false;
+    };
+
   };
 
   outputs = inputs@{ self, nixpkgs, ... }:
