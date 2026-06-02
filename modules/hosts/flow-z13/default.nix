@@ -1,8 +1,8 @@
 { self, inputs, ... }: {
-  flake.nixosConfiguration.flow-z13 = inputs.nixpkgs.lib.nixosSystem {
-    module = [
+  flake.nixosConfigurations.flow-z13 = inputs.nixpkgs.lib.nixosSystem {
+  specialArgs = { inherit inputs; }; 
+    modules = [
       self.nixosModules.flowz13Configuration
-      self.nixosModules.plasma
     ];
   };
 }

@@ -1,5 +1,5 @@
 { self, inputs, ... }: {
-  flake.nixosModules.zen = { pkgs, lib, ... }:
+  flake.nixosModules.zen = { inputs, pkgs, lib, ... }: 
     let
       extension = shortId: guid: {
         name = guid;
@@ -20,8 +20,8 @@
         (extension "privacy-badger17" "jid1-MnnxcxisBPnSXQ@jetpack")
         (extension "darkreader" "addon@darkreader.org")
       ];
-
-    in {
+    in
+    {
       environment.systemPackages = [
         (pkgs.wrapFirefox
           inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.zen-browser-unwrapped
@@ -35,41 +35,38 @@
             extraPolicies = {
               DisableTelemetry = true;
               ExtensionSettings = builtins.listToAttrs extensions;
-
-              SearchEngines = {
-                Add = [
-                  {
-                    Name = "Kagi";
-                    URLTemplate = "https://kagi.com/search?q={searchTerms}";
-                    IconURL = "http://kagi.com/favicon.ico";
-                    Alias = "@kagi";
-                  }
-                  {
-                    Name = "nixpkgs packages";
-                    URLTemplate = "https://search.nixos.org/packages?query={searchTerms}";
-                    IconURL = "https://wiki.nixos.org/favicon.ico";
-                    Alias = "@np";
-                  }
-                  {
-                    Name = "NixOS options";
-                    URLTemplate = "https://search.nixos.org/options?query={searchTerms}";
-                    IconURL = "https://wiki.nixos.org/favicon.ico";
-                    Alias = "@no";
-                  }
-                  {
-                    Name = "NixOS Wiki";
-                    URLTemplate = "https://wiki.nixos.org/w/index.php?search={searchTerms}";
-                    IconURL = "https://wiki.nixos.org/favicon.ico";
-                    Alias = "@nw";
-                  }
-                  {
-                    Name = "noogle";
-                    URLTemplate = "https://noogle.dev/q?term={searchTerms}";
-                    IconURL = "https://noogle.dev/favicon.ico";
-                    Alias = "@ng";
-                  }
-                ];
-              };
+              SearchEngines.Add = [
+                {
+                  Name = "Kagi";
+                  URLTemplate = "https://kagi.com/search?q={searchTerms}";
+                  IconURL = "http://kagi.com/favicon.ico";
+                  Alias = "@kagi";
+                }
+                {
+                  Name = "nixpkgs packages";
+                  URLTemplate = "https://search.nixos.org/packages?query={searchTerms}";
+                  IconURL = "https://wiki.nixos.org/favicon.ico";
+                  Alias = "@np";
+                }
+                {
+                  Name = "NixOS options";
+                  URLTemplate = "https://search.nixos.org/options?query={searchTerms}";
+                  IconURL = "https://wiki.nixos.org/favicon.ico";
+                  Alias = "@no";
+                }
+                {
+                  Name = "NixOS Wiki";
+                  URLTemplate = "https://wiki.nixos.org/w/index.php?search={searchTerms}";
+                  IconURL = "https://wiki.nixos.org/favicon.ico";
+                  Alias = "@nw";
+                }
+                {
+                  Name = "noogle";
+                  URLTemplate = "https://noogle.dev/q?term={searchTerms}";
+                  IconURL = "https://noogle.dev/favicon.ico";
+                  Alias = "@ng";
+                }
+              ];
             };
           }
         )

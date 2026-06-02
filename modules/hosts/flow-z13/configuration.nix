@@ -4,10 +4,31 @@
   flake.nixosModules.flowz13Configuration = { pkgs, lib, ... }: {
 
     imports = [
-      ./hardware-configuration.nix
+      self.nixosModules.flowz13Hardware
+      self.nixosModules.niri
+      # self.nixosModules.plasma
+      self.nixosModules.zen
+
     ];
 
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
+    
+services.gnome.gnome-keyring.enable = true;
+
+# This allows your login password to unlock the keyring automatically
+security.pam.services.greetd.enableGnomeKeyring = true; 
+# (Replace 'greetd' with your display manager, e.g., 'sddm', 'gdm', or 'login' if using TTY)
+
+# Ensure the DBus service is visible to Niri
+systemd.user.services.gnome-keyring = {
+  description = "GNOME Keyring";
+  serviceConfig = {
+    ExecStart = "${pkgs.gnome-keyring}/bin/gnome-keyring-daemon --start --foreground --components=secrets";
+    Restart = "on-abort";
+  };
+  wantedBy = [ "graphical-session.target" ];
+};
+
 
     # Bootloader.
     boot.loader.systemd-boot.enable = true;
@@ -131,17 +152,35 @@
       description = "Daren Drahos";
       extraGroups = [ "networkmanager" "wheel" ];
       packages = with pkgs; [
-        kdePackages.kate
-        git
         github-cli
-        yazi
-        neovim
-        lazygit
         kitty
         anki
         vesktop
+        playerctl
       ];
     };
+
+
+        # List packages installed in system profile. To search, run:
+    # $ nix search wget
+    environment.systemPackages = with pkgs; [
+        btop
+        pciutils
+        asusctl
+        supergfxctl
+        lazygit
+        neovim
+        git
+        yazi
+        stow
+        fd
+        fzf
+        eza
+    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    #  wget
+    ];
+
+
 
     # Install firefox.
     programs.firefox.enable = true;
@@ -151,10 +190,7 @@
       dedicatedServer.openFirewall = true;
       extraCompatPackages = with pkgs; [
         proton-ge-bin
-        btop
-        pciutils
-        asusctl
-        supergfxctl
+
       ];
     };
     programs.gamemode.enable = true;
@@ -180,12 +216,7 @@
     # Allow unfree packages
     nixpkgs.config.allowUnfree = true;
 
-    # List packages installed in system profile. To search, run:
-    # $ nix search wget
-    environment.systemPackages = with pkgs; [
-    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    #  wget
-    ];
+
 
     # Some programs need SUID wrappers, can be configured further or are
     # started in user sessions.
