@@ -38,6 +38,13 @@ systemd.user.services.gnome-keyring = {
     # Use latest kernel.
     boot.kernelPackages = pkgs.linuxPackages_latest;
 
+    boot.supportedFilesystems = [ "nfs" ];
+
+    fileSystems."/mnt/nas" = {
+      device = "192.168.100.21:/mnt/nas-data/files-dazza";
+      fsType = "nfs";
+      options = [ "x-systemd.automount" "noauto" ];
+    };
     networking.hostName = "dazzapc"; # Define your hostname.
     # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -149,6 +156,7 @@ systemd.user.services.gnome-keyring = {
 
     # Define a user account. Don't forget to set a password with ‘passwd’.
     users.users.dazza = {
+      uid = 1000;
       isNormalUser = true;
       description = "Daren Drahos";
       extraGroups = [ "networkmanager" "wheel" ];
