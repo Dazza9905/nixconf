@@ -1,14 +1,15 @@
 
 { self, inputs, ... }:
 {
-  flake.nixosModules.flowz13Configuration = { pkgs, lib, ... }: {
+  flake.nixosModules.dazzapcConfiguration = { pkgs, lib, ... }: {
 
     imports = [
-      self.nixosModules.flowz13Hardware
+      self.nixosModules.dazzapcHardware
       self.nixosModules.niri
       # self.nixosModules.plasma
       self.nixosModules.zen
       self.nixosModules.fonts
+      self.nixosModules.yazi
     ];
 
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -31,13 +32,13 @@ systemd.user.services.gnome-keyring = {
 
 
     # Bootloader.
-    boot.loader.systemd-boot.enable = true;
-    boot.loader.efi.canTouchEfiVariables = true;
-
+    boot.loader.grub.enable = true;
+    boot.loader.grub.device = "/dev/nvme0n1";
+    boot.loader.grub.useOSProber = true;
     # Use latest kernel.
     boot.kernelPackages = pkgs.linuxPackages_latest;
 
-    networking.hostName = "flow-z13"; # Define your hostname.
+    networking.hostName = "dazzapc"; # Define your hostname.
     # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
     # Configure network proxy if necessary
@@ -171,11 +172,13 @@ systemd.user.services.gnome-keyring = {
         lazygit
         neovim
         git
-        yazi
         stow
         fd
         fzf
         eza
+        zip
+        unzip
+        bat
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     #  wget
     ];
