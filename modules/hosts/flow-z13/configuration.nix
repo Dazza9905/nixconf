@@ -40,6 +40,11 @@ systemd.user.services.gnome-keyring = {
     # Use latest kernel.
     boot.kernelPackages = pkgs.linuxPackages_latest;
 
+    #battery and asus stuff
+    services.upower.enable = true;
+    services.asusd.enable = true;
+    services.supergfxd.enable = true;
+
     networking.hostName = "flow-z13"; # Define your hostname.
     # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -143,8 +148,6 @@ systemd.user.services.gnome-keyring = {
       #media-session.enable = true;
     };
 
-  services.supergfxd.enable = true;
-  services.asusd.enable = true;
 
     # Enable touchpad support (enabled default in most desktopManager).
     # services.xserver.libinput.enable = true;
