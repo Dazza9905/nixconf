@@ -9,6 +9,9 @@
       # self.nixosModules.plasma
       self.nixosModules.zen
       self.nixosModules.fonts
+      self.nixosModules.yazi
+      self.nixosModules.networking
+      # self.nixosModules."3d"
     ];
 
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -171,7 +174,6 @@ systemd.user.services.gnome-keyring = {
         lazygit
         neovim
         git
-        yazi
         stow
         fd
         fzf
