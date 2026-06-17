@@ -1,0 +1,26 @@
+The mode list is the tell. Look at what HDMI-A-1 exposes: max 4K@30, and 1080p@119.88 as the highest-bandwidth mode. 1080p120 ≈ 297 MHz pixel clock — that's *exactly* the 300 MHz TMDS ceiling of HDMI 1.4. 4K60 needs 594 MHz. So the TV's EDID is advertising itself as an HDMI 1.4 sink. This isn't a driver, niri, or cable problem — the kernel just builds the mode list from what the EDID claims.
+
+And it matches your Windows experience perfectly: HDR over direct HDMI also requires the full-bandwidth EDID, and it didn't work there either. Same root cause on both OSes.
+
+**The fix: enable Input Signal Plus on the TV**
+
+Samsung gates full HDMI bandwidth *per input port*. With it off, the port presents an HDMI 1.4 EDID (300 MHz TMDS, no HDR metadata blocks).
+
+Settings → All Settings → Connection (or General) → External Device Manager → **Input Signal Plus** → enable for the specific HDMI input you're plugged into. TV will re-hotplug, kernel re-reads EDID, and 4K60 + the HDR/FRL capability blocks should appear.
+
+**Verify before/after:**
+
+```bash
+nix-shell -p edid-decode --run \
+  "edid-decode < /sys/class/drm/card1-HDMI-A-1/edid"
+```
+
+Check `Maximum TMDS clock` and whether an *HDMI Forum VSDB* block exists (that's where 600 MHz TMDS, FRL rates, and HDR static metadata live). Right now it'll almost certainly say 300 MHz with no HF-VSDB.
+
+**Hard limits to keep in mind:**
+
+- RTX 2080 = HDMI **2.0b** only, no FRL. Absolute max over native HDMI: 4K60 8-bit RGB, or 4K60 HDR at 10-bit with 4:2:2/4:2:0 chroma. 4K120/144 over that port is physically impossible regardless of cable or OS.
+- The USB-C port is VirtualLink (DP 1.4 alt mode). With an active DP→HDMI 2.1 (PCON) adapter you can push 4K120 — Turing supports DSC on DP 1.4. That's why the dongle gave you proper HDR on Windows. On Linux, PCON adapters generally work with the proprietary driver, but the modes you get still depend on what the adapter translates into its EDID — same `edid-decode` check applies.
+- HDR on Linux is a separate battle: niri doesn't do HDR output yet (note `'ten_bit': False` in your dump), so even with the bandwidth fixed you'll get SDR-only compositing. KDE Plasma is the most mature option if you want actual HDR output on Wayland today.
+
+So: flip Input Signal Plus first, re-check the EDID, expect 4K60 over HDMI and 4K120 via the dongle. 99% this is it.

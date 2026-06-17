@@ -1,7 +1,7 @@
 { self, inputs, ... }: {
-  flake.nixosModules.fonts = { pkgs, lib, ... }: {
-    fonts.packages = with pkgs; [
-      nerd-fonts.symbols-only
+  flake.nixosModules.games = { pkgs, lib, username, ... }: {
+    users.users.${username}.packages = with pkgs; [
+      moonlight-qt
     ];
   };
 }

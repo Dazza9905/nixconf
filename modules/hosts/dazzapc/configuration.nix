@@ -10,12 +10,17 @@
       self.nixosModules.zen
       self.nixosModules.fonts
       self.nixosModules.yazi
+      self.nixosModules.networking
+      self.nixosModules.starcitizen
+      self.nixosModules."3d"
+      self.nixosModules.games
+      self.nixosModules.sunshine
     ];
 
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
     
 services.gnome.gnome-keyring.enable = true;
-
+services.udisks2.enable = true;
 # This allows your login password to unlock the keyring automatically
 security.pam.services.greetd.enableGnomeKeyring = true; 
 # (Replace 'greetd' with your display manager, e.g., 'sddm', 'gdm', or 'login' if using TTY)
@@ -29,8 +34,7 @@ systemd.user.services.gnome-keyring = {
   };
   wantedBy = [ "graphical-session.target" ];
 };
-
-
+    security.polkit.enable = true;
     # Bootloader.
     boot.loader.grub.enable = true;
     boot.loader.grub.device = "/dev/nvme0n1";
@@ -73,21 +77,17 @@ systemd.user.services.gnome-keyring = {
       LC_TIME = "sk_SK.UTF-8";
     };
 
-    hardware.graphics.enable = true;
-    hardware.nvidia.open = true;  # see the note above
+    hardware.graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
+
+    hardware.nvidia.open = false;
 
 
     services.xserver.videoDrivers = [
-      "modesetting"
       "nvidia"
     ];
-
-    hardware.nvidia.prime = {
-      offload.enable = true;
-      offload.enableOffloadCmd = true;
-      intelBusId = "PCI:0@0:2:0";
-      nvidiaBusId = "PCI:1@0:0:0";
-    };
 
     services.flatpak.enable = true;
   systemd.services.flatpak-repo = {
@@ -104,24 +104,6 @@ systemd.user.services.gnome-keyring = {
     deps = [];
   };
 
-    # programs.hyprland = {
-      # enable = true;
-      #withUWSM = true; # recommended for most users
-      #xwayland.enable = true; # Xwayland can be disabled.
-      #nvidiaPatches = true;
-
-    # };
-
-    # services.greetd = {
-    #   enable = true;
-    #   settings = rec {
-    #     initial_session = {
-    #       command = "hyprland > /dev/null 2>&1";
-    #       user = "dazza";
-    #     };
-    #     default_session = initial_session;
-    #   };
-    # };
 
     #bluetooth
     hardware.bluetooth = {
@@ -148,9 +130,9 @@ systemd.user.services.gnome-keyring = {
       #media-session.enable = true;
     };
 
-  services.supergfxd.enable = true;
-  services.asusd.enable = true;
-
+    programs.localsend = {
+      enable = true;
+    };
     # Enable touchpad support (enabled default in most desktopManager).
     # services.xserver.libinput.enable = true;
 
@@ -159,13 +141,20 @@ systemd.user.services.gnome-keyring = {
       uid = 1000;
       isNormalUser = true;
       description = "Daren Drahos";
-      extraGroups = [ "networkmanager" "wheel" ];
+      extraGroups = [ "networkmanager" "wheel" "storage" "dialout" ];
       packages = with pkgs; [
         github-cli
         kitty
         anki
         vesktop
         playerctl
+        beeper
+        localsend
+        kdePackages.dolphin
+        kdePackages.kio
+        kdePackages.kio-fuse
+        kdePackages.kio-extras
+        gparted
       ];
     };
 
@@ -175,8 +164,6 @@ systemd.user.services.gnome-keyring = {
     environment.systemPackages = with pkgs; [
         btop
         pciutils
-        asusctl
-        supergfxctl
         lazygit
         neovim
         git
@@ -187,14 +174,19 @@ systemd.user.services.gnome-keyring = {
         zip
         unzip
         bat
+        nwg-displays
+        pavucontrol
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     #  wget
     ];
 
+    nix.settings.auto-optimise-store = true;
+    nix.gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
 
-
-    # Install firefox.
-    programs.firefox.enable = true;
     programs.steam = {
       enable = true;
       remotePlay.openFirewall = true;
@@ -211,50 +203,8 @@ systemd.user.services.gnome-keyring = {
       shell = pkgs.fish;
     }; 
 
-  # btop with Intel iGPU + NVIDIA dGPU support
-
-  security.wrappers.btop = {
-    owner = "root";
-    group = "root";
-    source = "${pkgs.btop}/bin/btop";
-    capabilities = "cap_perfmon+ep";
-  };
-
-  environment.shellAliases = {
-    btop = "/run/wrappers/bin/btop";
-  };
-
-    # Allow unfree packages
     nixpkgs.config.allowUnfree = true;
 
-
-
-    # Some programs need SUID wrappers, can be configured further or are
-    # started in user sessions.
-    # programs.mtr.enable = true;
-    # programs.gnupg.agent = {
-    #   enable = true;
-    #   enableSSHSupport = true;
-    # };
-
-    # List services that you want to enable:
-
-    # Enable the OpenSSH daemon.
-    # services.openssh.enable = true;
-
-    # Open ports in the firewall.
-    # networking.firewall.allowedTCPPorts = [ ... ];
-    # networking.firewall.allowedUDPPorts = [ ... ];
-    # Or disable the firewall altogether.
-    # networking.firewall.enable = false;
-
-    # This value determines the NixOS release from which the default
-    # settings for stateful data, like file locations and database versions
-    # on your system were taken. It‘s perfectly fine and recommended to leave
-    # this value at the release version of the first install of this system.
-    # Before changing this value read the documentation for this option
-    # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-    system.stateVersion = "25.05"; # Did you read the comment?
-
+    system.stateVersion = "25.05"; 
   };
 }

@@ -178,6 +178,7 @@ systemd.user.services.gnome-keyring = {
         fd
         fzf
         eza
+        nwg-displays
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     #  wget
     ];
