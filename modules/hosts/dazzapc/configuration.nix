@@ -42,13 +42,16 @@ systemd.user.services.gnome-keyring = {
     # Use latest kernel.
     boot.kernelPackages = pkgs.linuxPackages_latest;
 
-    boot.supportedFilesystems = [ "nfs" ];
+    boot.supportedFilesystems = [ "nfs" "ntfs" ];
 
     fileSystems."/mnt/nas" = {
       device = "192.168.100.21:/mnt/nas-data/files-dazza";
       fsType = "nfs";
       options = [ "x-systemd.automount" "noauto" ];
     };
+
+
+
     networking.hostName = "dazzapc"; # Define your hostname.
     # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -82,7 +85,19 @@ systemd.user.services.gnome-keyring = {
       enable32Bit = true;
     };
 
+    hardware.nvidia = {
+      modesetting.enable = true; # enables nvidia_drm.modeset=1
+    };
+
     hardware.nvidia.open = false;
+
+
+    fileSystems."/mnt/samsung990pro" = {
+      device = "/dev/disk/by-uuid/CC702C2D702C20A6";
+      fsType = "ntfs-3g"; 
+      options = [ "rw" "uid=1000" "nofail" ];
+    };
+
 
 
     services.xserver.videoDrivers = [
@@ -155,6 +170,7 @@ systemd.user.services.gnome-keyring = {
         kdePackages.kio-fuse
         kdePackages.kio-extras
         gparted
+        ncspot
       ];
     };
 
@@ -176,6 +192,14 @@ systemd.user.services.gnome-keyring = {
         bat
         nwg-displays
         pavucontrol
+        ntfs3g
+        dust
+        zellij
+        ripgrep
+        bob-nvim
+        gitui
+        zoxide
+        starship
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     #  wget
     ];
@@ -193,7 +217,6 @@ systemd.user.services.gnome-keyring = {
       dedicatedServer.openFirewall = true;
       extraCompatPackages = with pkgs; [
         proton-ge-bin
-
       ];
     };
     programs.gamemode.enable = true;

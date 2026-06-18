@@ -14,6 +14,11 @@
 
     nix-citizen.url = "github:LovingMelody/nix-citizen";
 
+    noctalia = {
+      url = "github:noctalia-dev/noctalia";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   # Optional - updates underlying without waiting for nix-citizen to update
     nix-gaming.url = "github:fufexan/nix-gaming";
     nix-citizen.inputs.nix-gaming.follows = "nix-gaming";

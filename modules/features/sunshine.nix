@@ -6,10 +6,19 @@
     #   capSysAdmin = true; #wayland 
     #   openFirewall = true;
     # };
-    #
-    # users.users.${username} = {
-    #   extraGroups = [ "uinput" ];
-    # };
-    # hardware.uinput.enable = true;
+    services.sunshine = {
+      enable = true;
+      autoStart = true;
+      capSysAdmin = true;
+      openFirewall = true;
+      package = pkgs.sunshine.override {
+        cudaSupport = true;
+        cudaPackages = pkgs.cudaPackages;
+      };
+    };
+    users.users.${username} = {
+      extraGroups = [ "uinput" "video" "render" ];
+    };
+    hardware.uinput.enable = true;
   };
 }
