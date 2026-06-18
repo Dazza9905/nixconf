@@ -294,6 +294,7 @@
         "nixpkgs": "nixpkgs_3",
         "noctalia": "noctalia",
         "wrapper-modules": "wrapper-modules",
+        "wrappers": "wrappers",
         "zen-browser": "zen-browser"
       }
     },
@@ -333,6 +334,26 @@
       "original": {
         "owner": "BirdeeHub",
         "repo": "nix-wrapper-modules",
+        "type": "github"
+      }
+    },
+    "wrappers": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1780428045,
+        "narHash": "sha256-pMJOun/oYhXqes+B3khzRDGWuiCNiWJ25+SVW0OwzNY=",
+        "owner": "Lassulus",
+        "repo": "wrappers",
+        "rev": "ce9122bf06697ade7c5087940e0c280b89dd0208",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Lassulus",
+        "repo": "wrappers",
         "type": "github"
       }
     },

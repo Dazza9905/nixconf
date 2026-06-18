@@ -15,6 +15,7 @@
       self.nixosModules."3d"
       self.nixosModules.games
       self.nixosModules.sunshine
+      self.nixosModules.ncspot
     ];
 
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -170,7 +171,7 @@ systemd.user.services.gnome-keyring = {
         kdePackages.kio-fuse
         kdePackages.kio-extras
         gparted
-        ncspot
+        claude-code
       ];
     };
 
