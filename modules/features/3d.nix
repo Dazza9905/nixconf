@@ -3,6 +3,7 @@
     users.users.${username}.packages = with pkgs; [
       blender
       prusa-slicer
+      plasticity
     ];
   };
 }

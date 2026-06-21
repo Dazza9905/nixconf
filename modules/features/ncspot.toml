@@ -1,3 +1,41 @@
 notify = true
 volnorm = true
 gapless = true
+
+
+#
+# [keybindings]
+# "1" = "focus queue"
+# "2" = "focus search"
+# "3" = "focus library"
+# "q" = "noop"
+# "q" = "queue; move down 1"
+# "shift+q" = "playnext; move down 1"
+# "n" = "jumpnext"
+# "p" = "jumpprevious"
+# "<" = "seek -10000"
+# ">" = "seek +10000"
+# "shift+<" = "seek -40000"
+# "shift+>" = "seek +40000"
+# "ctrl+d" = "move down 15"
+# "ctrl+d" = "move up 15"
+#
+
+[theme]
+background = "#11111b"
+primary = "#cdd6f4"
+secondary = "#a3b4eb"
+title = "#cba6f7"
+playing = "#1ba891"
+playing_selected = "#94e2d5"
+playing_bg = "#1e1e2e"
+highlight = "#11111b"
+highlight_bg = "#fab387"
+error = "#f38ba8"
+error_bg = "#c8043a"
+statusbar = "#cdd6f4"
+statusbar_progress = "#cba6f7"
+statusbar_bg = "#1e1e2e"
+cmdline = "#cdd6f4"
+cmdline_bg = "#11111b"
+search_match = "#f38ba8"

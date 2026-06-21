@@ -16,6 +16,7 @@
       self.nixosModules.games
       self.nixosModules.sunshine
       self.nixosModules.ncspot
+      self.nixosModules.audiorelay
     ];
 
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
