@@ -90,9 +90,12 @@ systemd.user.services.gnome-keyring = {
 
     hardware.nvidia = {
       modesetting.enable = true; # enables nvidia_drm.modeset=1
+      powerManagement.enable = true; # save/restore GPU state on suspend/resume
     };
 
     hardware.nvidia.open = false;
+
+    boot.kernelParams = [ "nvidia_drm.fbdev=1" ];
 
 
     fileSystems."/mnt/samsung990pro" = {
@@ -129,8 +132,21 @@ systemd.user.services.gnome-keyring = {
       powerOnBoot = false;
     };
 
-    # Enable CUPS to print documents.
-    services.printing.enable = true;
+    #printing 
+    services.avahi = {
+      enable = true;
+      nssmdns4 = true;
+      openFirewall = true;
+    };
+
+    services.printing = {
+      enable = true;
+      drivers = with pkgs; [
+        cups-filters
+        cups-browsed
+      ];
+    };
+
 
     # Enable sound with pipewire.
     services.pulseaudio.enable = false;
