@@ -17,6 +17,7 @@
       self.nixosModules.sunshine
       self.nixosModules.ncspot
       self.nixosModules.audiorelay
+      self.nixosModules.wooting
     ];
 
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
