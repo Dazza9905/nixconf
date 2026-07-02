@@ -6,17 +6,14 @@
     imports = [
       self.nixosModules.dazzapcHardware
       self.nixosModules.niri
-      # self.nixosModules.plasma
       self.nixosModules.zen
       self.nixosModules.fonts
       self.nixosModules.yazi
-      self.nixosModules.networking
       self.nixosModules.starcitizen
       self.nixosModules."3d"
-      self.nixosModules.games
+      # self.nixosModules.games
       self.nixosModules.sunshine
       self.nixosModules.ncspot
-      self.nixosModules.audiorelay
       self.nixosModules.wooting
     ];
 

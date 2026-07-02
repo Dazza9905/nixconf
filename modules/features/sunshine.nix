@@ -18,7 +18,11 @@
     };
     users.users.${username} = {
       extraGroups = [ "uinput" "video" "render" ];
+      packages = with pkgs; [
+        moonlight-qt
+      ];
     };
+
     hardware.uinput.enable = true;
   };
 }

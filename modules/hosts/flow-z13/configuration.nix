@@ -11,7 +11,10 @@
       self.nixosModules.fonts
       self.nixosModules.yazi
       self.nixosModules.networking
-      # self.nixosModules."3d"
+      self.nixosModules."3d"
+      # self.nixosModules.sunshine
+      self.nixosModules.ncspot
+
     ];
 
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -74,7 +77,14 @@ systemd.user.services.gnome-keyring = {
     };
 
     hardware.graphics.enable = true;
-    hardware.nvidia.open = true;  # see the note above
+
+
+    hardware.nvidia = {
+      modesetting.enable = true; # enables nvidia_drm.modeset=1
+      powerManagement.enable = true; # save/restore GPU state on suspend/resume
+    };
+
+    boot.kernelParams = [ "nvidia_drm.fbdev=1" ];
 
 
     services.xserver.videoDrivers = [
@@ -82,13 +92,15 @@ systemd.user.services.gnome-keyring = {
       "nvidia"
     ];
 
-    hardware.nvidia.prime = {
-      offload.enable = true;
-      offload.enableOffloadCmd = true;
-      intelBusId = "PCI:0@0:2:0";
-      nvidiaBusId = "PCI:1@0:0:0";
+    hardware.nvidia = {
+      open = false;
+      prime = {
+        offload.enable = true;
+        offload.enableOffloadCmd = true;
+        intelBusId = "PCI:0@0:2:0";
+        nvidiaBusId = "PCI:1@0:0:0";
+      };
     };
-
     services.flatpak.enable = true;
   systemd.services.flatpak-repo = {
     wantedBy = ["multi-user.target"];
@@ -182,6 +194,7 @@ systemd.user.services.gnome-keyring = {
         fzf
         eza
         nwg-displays
+        pavucontrol
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     #  wget
     ];
