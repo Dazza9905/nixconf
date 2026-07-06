@@ -12,7 +12,6 @@
     wrapper-modules = {
       url = "github:BirdeeHub/nix-wrapper-modules";
       inputs.nixpkgs.follows = "nixpkgs";
-
     };
     wrappers = {
       url = "github:Lassulus/wrappers";
@@ -32,8 +31,12 @@
       url = "github:noctalia-dev/noctalia";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    noctalia-greeter = {
+      url = "github:noctalia-dev/noctalia-greeter";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-  # Optional - updates underlying without waiting for nix-citizen to update
+    # Optional - updates underlying without waiting for nix-citizen to update
     nix-gaming = {
       url = "github:fufexan/nix-gaming";
       inputs.nixpkgs.follows = "nixpkgs";

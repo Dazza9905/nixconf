@@ -1,0 +1,67 @@
+{
+  self,
+  inputs,
+  ...
+}: {
+  flake.nixosModules.programs-basic = {
+    pkgs,
+    lib,
+    self',
+    username,
+    ...
+  }: {
+    imports = [
+      self.nixosModules.zen
+      self.nixosModules.yazi
+      self.nixosModules.ncspot
+      self.nixosModules.btop
+    ];
+
+    programs.localsend = {
+      enable = true;
+    };
+
+    users.users.${username} = {
+      packages = with pkgs; [
+        github-cli
+        kitty
+        anki
+        vesktop
+        playerctl
+        claude-code
+        anki
+        playerctl
+        beeper
+        gparted
+        claude-code
+      ];
+    };
+    environment.systemPackages = with pkgs; [
+      pciutils
+      lazygit
+      neovim
+      git
+      stow
+      fd
+      fzf
+      eza
+      zip
+      unzip
+      bat
+      nwg-displays
+      pavucontrol
+      ntfs3g
+      dust
+      zellij
+      ripgrep
+      bob-nvim
+      gitui
+      zoxide
+      starship
+      evil-helix
+      alejandra
+      libnotify
+      self.packages.${pkgs.stdenv.hostPlatform.system}.nixos-rebuild-helper
+    ];
+  };
+}

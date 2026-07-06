@@ -1,7 +1,22 @@
-{ self, inputs, ... }: {
-  flake.nixosModules.games = { pkgs, lib, username, ... }: {
-    users.users.${username}.packages = with pkgs; [
-      moonlight-qt
-    ];
+{
+  self,
+  inputs,
+  ...
+}: {
+  flake.nixosModules.games = {
+    pkgs,
+    lib,
+    username,
+    ...
+  }: {
+    programs.steam = {
+      enable = true;
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = true;
+      extraCompatPackages = with pkgs; [
+        proton-ge-bin
+      ];
+    };
+    programs.gamemode.enable = true;
   };
 }

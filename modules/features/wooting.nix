@@ -1,5 +1,14 @@
-{ self, inputs, ... }: {
-  flake.nixosModules.wooting = { pkgs, lib, username, ... }: {
+{
+  self,
+  inputs,
+  ...
+}: {
+  flake.nixosModules.wooting = {
+    pkgs,
+    lib,
+    username,
+    ...
+  }: {
     services.udev.packages = [
       (pkgs.writeTextFile {
         name = "wooting-udev-rules";
@@ -26,12 +35,10 @@
       })
     ];
 
-
     users.users.${username} = {
       packages = with pkgs; [
         wootility
       ];
     };
-
   };
 }

@@ -1,11 +1,14 @@
-{ self, inputs, ... }: {
-  flake.nixosModules.sunshine = { pkgs, lib, username, ... }: {
-    # services.sunshine = {
-    #   enable = true;
-    #   autoStart = true;
-    #   capSysAdmin = true; #wayland 
-    #   openFirewall = true;
-    # };
+{
+  self,
+  inputs,
+  ...
+}: {
+  flake.nixosModules.sunshine = {
+    pkgs,
+    lib,
+    username,
+    ...
+  }: {
     services.sunshine = {
       enable = true;
       autoStart = true;
@@ -17,7 +20,7 @@
       };
     };
     users.users.${username} = {
-      extraGroups = [ "uinput" "video" "render" ];
+      extraGroups = ["uinput" "video" "render"];
       packages = with pkgs; [
         moonlight-qt
       ];

@@ -1,13 +1,22 @@
-{ self, inputs, ... }: {
-  flake.nixosModules.networking = { pkgs, lib, username, ... }: {
-        services.netbird.clients.wt0 = {
-        port = 51821;
-        ui.enable = false;
-        openFirewall = true;
-        openInternalFirewall = true;
+{
+  self,
+  inputs,
+  ...
+}: {
+  flake.nixosModules.networking = {
+    pkgs,
+    lib,
+    username,
+    ...
+  }: {
+    services.netbird.clients.wt0 = {
+      port = 51821;
+      ui.enable = false;
+      openFirewall = true;
+      openInternalFirewall = true;
     };
 
-    users.users.${username}.extraGroups = [ "netbird-wt0" ];
+    users.users.${username}.extraGroups = ["netbird-wt0"];
 
     #map origo command
     systemd.tmpfiles.rules = [

@@ -245,6 +245,26 @@
         "type": "github"
       }
     },
+    "noctalia-greeter": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1783267606,
+        "narHash": "sha256-GhnfGnxzD1Fp1sbY0I2b9gNIBT298dw8ijk5s5ffZIo=",
+        "owner": "noctalia-dev",
+        "repo": "noctalia-greeter",
+        "rev": "48fc6d22b54efd62df83e3d1266feb89c291115a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "noctalia-dev",
+        "repo": "noctalia-greeter",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "flake-parts": "flake-parts",
@@ -253,6 +273,7 @@
         "nix-gaming": "nix-gaming",
         "nixpkgs": "nixpkgs",
         "noctalia": "noctalia",
+        "noctalia-greeter": "noctalia-greeter",
         "wrapper-modules": "wrapper-modules",
         "wrappers": "wrappers",
         "zen-browser": "zen-browser"
