@@ -14,6 +14,9 @@
         git="${lib.getExe pkgs.git}"
         CONFIG_DIR="$HOME/.nixconf/"
         LOG="/tmp/nixos-switch.log"
+        DOTFILES_DIR="$HOME/.dotfiles/"
+
+
         pushd "$CONFIG_DIR" >/dev/null
         echo "Formatting nix files..."
         "$alejandra" . &>/dev/null || {
@@ -24,7 +27,7 @@
             exit 1
         }
         echo "Changes:"
-        "$git" diff --stat
+        "$git" diff
         echo "NixOS Rebuilding..."
         if sudo nixos-rebuild switch --flake . &>"$LOG"; then
             current=$(nixos-rebuild list-generations | awk '$NF=="True" {print "gen " $1 " (" $2 " " $3 ")"}')
@@ -39,6 +42,11 @@
             popd >/dev/null
             exit 1
         fi
+        popd >/dev/null
+
+        pushd "$DOTFILES_DIR" >/dev/null
+        "$git" add -A
+        "$git" commit -am "$current"
         popd >/dev/null
       '';
     };
