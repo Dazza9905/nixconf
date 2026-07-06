@@ -62,6 +62,7 @@
       alejandra
       libnotify
       self.packages.${pkgs.stdenv.hostPlatform.system}.nixos-rebuild-helper
+      vim
     ];
   };
 }
