@@ -26,6 +26,7 @@
             popd >/dev/null
             exit 1
         }
+        current="."
         echo "Changes:"
         "$git" diff
         echo "NixOS Rebuilding..."
@@ -34,9 +35,6 @@
             echo "Current generation: $current"
             "$git" commit -am "$current"
             "$notify_send" -e "NixOS Rebuilt OK!" --icon=software-update-available
-            cd "$DOTFILES_DIR"
-            "$git" add -A
-            "$git" commit -am "$current"
         else
             echo "Rebuild failed, errors below:"
             grep --color=always -i error "$LOG" || cat "$LOG"
@@ -45,6 +43,9 @@
             popd >/dev/null
             exit 1
         fi
+        cd "$DOTFILES_DIR"
+        "$git" add .
+        "$git" commit -am "$current"
         popd >/dev/null
       '';
     };
