@@ -35,6 +35,7 @@
         beeper
         gparted
         claude-code
+        moonlight-qt
       ];
     };
     environment.systemPackages = with pkgs; [
