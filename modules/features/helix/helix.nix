@@ -69,7 +69,7 @@
   in {
     packages.myHelix = pkgs.writeShellApplication {
       name = "hx";
-      runtimeInputs = [pkgs.evil-helix];
+      runtimeInputs = [pkgs.evil-helix pkgs.nil pkgs.alejandra pkgs.clang-tools];
       text = ''
         cfg=$(mktemp -d)
         trap 'rm -rf "$cfg"' EXIT
