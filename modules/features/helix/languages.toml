@@ -1,0 +1,17 @@
+[[language]]
+name = "nix"
+auto-format = true
+formatter = { command = "alejandra", args = ["-"] }
+language-servers = ["nil"]
+
+[[language]]
+name = "cpp"
+auto-format = true
+formatter = { command = "clang-format" }
+language-servers = ["clangd"]
+
+[[language]]
+name = "c"
+auto-format = true
+formatter = { command = "clang-format" }
+language-servers = ["clangd"]

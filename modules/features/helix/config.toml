@@ -1,0 +1,24 @@
+theme = "noctalia"
+
+[editor]
+line-number = "relative"
+auto-format = true
+auto-save = true
+completion-trigger-len = 1
+
+[editor.lsp]
+display-messages = true
+display-inlay-hints = true
+
+[editor.cursor-shape]
+normal = "block"
+insert = "bar"
+select = "underline"
+
+[editor.indent-guides]
+render = true
+character = "╎"
+
+[editor.statusline]
+left = ["mode", "spinner", "file-name", "file-modification-indicator"]
+right = ["diagnostics", "selections", "position", "file-encoding", "file-type"]

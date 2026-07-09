@@ -23,6 +23,7 @@
 
     users.users.${username} = {
       packages = with pkgs; [
+        self.packages.${pkgs.stdenv.hostPlatform.system}.myHelix
         github-cli
         kitty
         anki
