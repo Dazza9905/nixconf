@@ -7,12 +7,10 @@
     pkgs,
     lib,
     ...
-  }: {
-    packages.myHelix = inputs.wrapper-modules.wrappers.helix.wrap {
-      inherit pkgs;
-      package = pkgs.evil-helix;
-
-      settings = {
+  }: let
+    configDir = pkgs.runCommand "helix-config" {} ''
+      mkdir $out
+      cp ${(pkgs.formats.toml {}).generate "config.toml" {
         theme = "noctalia";
         editor = {
           line-number = "relative";
@@ -37,9 +35,8 @@
             right = ["diagnostics" "selections" "position" "file-encoding" "file-type"];
           };
         };
-      };
-
-      languages = {
+      }} $out/config.toml
+      cp ${(pkgs.formats.toml {}).generate "languages.toml" {
         language = [
           {
             name = "nix";
@@ -67,7 +64,22 @@
           nil.command = lib.getExe pkgs.nil;
           clangd.command = lib.getExe' pkgs.clang-tools "clangd";
         };
-      };
+      }} $out/languages.toml
+    '';
+  in {
+    packages.myHelix = pkgs.writeShellApplication {
+      name = "hx";
+      runtimeInputs = [pkgs.evil-helix];
+      text = ''
+        cfg=$(mktemp -d)
+        trap 'rm -rf "$cfg"' EXIT
+        cp ${configDir}/config.toml "$cfg/"
+        cp ${configDir}/languages.toml "$cfg/"
+        if [ -d "$HOME/.config/helix/themes" ]; then
+          cp -r "$HOME/.config/helix/themes" "$cfg/themes"
+        fi
+        HELIX_CONFIG_DIR="$cfg" exec hx "$@"
+      '';
     };
   };
 }
