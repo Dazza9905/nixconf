@@ -57,13 +57,11 @@
       zellij
       ripgrep
       bob-nvim
-      gitui
       zoxide
       starship
-      alejandra
       libnotify
       self.packages.${pkgs.stdenv.hostPlatform.system}.nixos-rebuild-helper
-      vim
+      brightnessctl
     ];
   };
 }

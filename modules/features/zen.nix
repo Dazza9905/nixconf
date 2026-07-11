@@ -28,7 +28,7 @@
       (extension "privacy-badger17" "jid1-MnnxcxisBPnSXQ@jetpack")
       (extension "darkreader" "addon@darkreader.org")
       (extension "vimium-ff" "{d7742d87-e61d-4b78-b8a1-b469842139fa}")
-      (extension "i-dont-care-about-cookie" "jid1-KKzOGWgsW3Ao4Q@jetpack")
+      (extension "i-dont-care-about-cookies" "jid1-KKzOGWgsW3Ao4Q@jetpack")
     ];
   in {
     environment.systemPackages = [
