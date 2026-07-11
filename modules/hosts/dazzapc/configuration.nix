@@ -15,6 +15,7 @@
       self.nixosModules.devices
       self.nixosModules.desktop
 
+      self.nixosModules.networking
       self.nixosModules.starcitizen
       self.nixosModules."programs-3d"
       self.nixosModules.sunshine
