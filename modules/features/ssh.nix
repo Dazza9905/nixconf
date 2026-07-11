@@ -13,7 +13,7 @@
       enable = true;
       openFirewall = true;
       settings = {
-        PasswordAuthentication = false;
+        PasswordAuthentication = true;
         KbdInteractiveAuthentication = false;
         PermitRootLogin = "no";
         AllowUsers = ["myUser"];
@@ -22,7 +22,7 @@
       };
     };
     users.users.${username}.openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICoX8q4oyO5E5lMUYnrFzFgSvSbHeZ8G7WkM42wBFYe2 dazza@dazzapc"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICoX8q4oyO5E5lMUYnrFzFgSvSbHeZ8G7WkM42wBFYe2"
     ];
   };
 }
