@@ -35,6 +35,9 @@
             right = ["diagnostics" "selections" "position" "file-encoding" "file-type"];
           };
         };
+        keys.normal = {
+          Ctrl-g = [":new" ":insert-output lazygit" ":buffer-close!" ":redraw"];
+        };
       }} $out/config.toml
       cp ${(pkgs.formats.toml {}).generate "languages.toml" {
         language = [
@@ -62,7 +65,10 @@
         ];
         language-server = {
           nil.command = lib.getExe pkgs.nil;
-          clangd.command = lib.getExe' pkgs.clang-tools "clangd";
+          clangd = {
+            command = lib.getExe' pkgs.clang-tools "clangd";
+            args = ["--completion-style=detailed" "--header-insertion=never" "--background-index"];
+          };
         };
       }} $out/languages.toml
     '';

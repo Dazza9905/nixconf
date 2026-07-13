@@ -16,7 +16,10 @@
       options = "--delete-older-than 30d";
     };
 
+    nix.settings.trusted-users = ["root" "${username}"];
     nixpkgs.config.allowUnfree = true;
+
+    programs.nix-ld.enable = true;
 
     nix.settings.experimental-features = ["nix-command" "flakes"];
   };
