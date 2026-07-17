@@ -37,6 +37,18 @@
         };
         keys.normal = {
           Ctrl-g = [":new" ":insert-output lazygit" ":buffer-close!" ":redraw"];
+          y = "yank_to_clipboard";
+          p = "paste_clipboard_after";
+          P = "paste_clipboard_before";
+          ">" = "indent";
+          "<" = "unindent";
+        };
+        keys.select = {
+          y = "yank_to_clipboard";
+          p = "paste_clipboard_after";
+          P = "paste_clipboard_before";
+          ">" = "indent";
+          "<" = "unindent";
         };
       }} $out/config.toml
       cp ${(pkgs.formats.toml {}).generate "languages.toml" {
