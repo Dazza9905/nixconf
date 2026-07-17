@@ -41,7 +41,7 @@
     environment.systemPackages = with pkgs; [
       pciutils
       lazygit
-      # neovim
+      neovim
       git
       stow
       fd
