@@ -74,6 +74,11 @@
             formatter = {command = lib.getExe' pkgs.clang-tools "clang-format";};
             language-servers = ["clangd"];
           }
+          {
+            name = "shader";
+            auto-format = true;
+            formatter = {command = lib.getExe' pkgs.clang-tools "clang-format";};
+          }
         ];
         language-server = {
           nil.command = lib.getExe pkgs.nil;
