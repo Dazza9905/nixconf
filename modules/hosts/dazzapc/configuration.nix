@@ -74,6 +74,7 @@
     };
 
     environment.systemPackages = with pkgs; [
+      google-chrome
     ];
 
     system.stateVersion = "25.05";
