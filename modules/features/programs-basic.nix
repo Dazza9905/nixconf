@@ -60,7 +60,6 @@
       zoxide
       starship
       libnotify
-      self.packages.${pkgs.stdenv.hostPlatform.system}.nixos-rebuild-helper
       brightnessctl
       devenv
       redact
