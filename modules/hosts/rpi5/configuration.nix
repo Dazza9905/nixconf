@@ -4,10 +4,17 @@
       self.nixosModules.rpi5Hardware
       self.nixosModules.base
       self.nixosModules.networking
+      self.nixosModules.sops
+      self.nixosModules.nas
+      self.nixosModules.docker
+      self.nixosModules.immich
+      self.nixosModules.backup
     ];
 
     # must match the colmena node name for apply-local
     networking.hostName = "rpi5";
+
+    sops.defaultSopsFile = ../../../secrets/rpi5.yaml;
 
     # TODO: revisit bootloader when NixOS is actually installed on the Pi
     # (likely via nixos-hardware / raspberry-pi-nix for Pi 5 support)
