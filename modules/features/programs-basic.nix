@@ -23,7 +23,19 @@
 
     users.users.${username} = {
       packages = with pkgs; [
-             ];
+        self.packages.${pkgs.stdenv.hostPlatform.system}.myHelix
+        github-cli
+        kitty
+        anki
+        vesktop
+        playerctl
+        claude-code
+        anki
+        playerctl
+        beeper
+        gparted
+        claude-code
+      ];
     };
     environment.systemPackages = with pkgs; [
       github-cli

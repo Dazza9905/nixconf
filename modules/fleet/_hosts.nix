@@ -9,13 +9,13 @@
   };
 
   # NOTEBOOK
-  # laurie = { 
-  #   system = "x86_64-linux";
-  #   targetHost = "flow-z13.lan";
-  #   targetUser = "root";
-  #   tags = ["laptop" "x86"];
-  #   allowLocalDeployment = true;
-  # };
+  laurie = { 
+    system = "x86_64-linux";
+    targetHost = "flow-z13.lan";
+    targetUser = "root";
+    tags = ["laptop" "x86"];
+    allowLocalDeployment = true;
+  };
 
   # HOMELAB SERVER
   maddie = {
