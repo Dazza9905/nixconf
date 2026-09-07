@@ -13,6 +13,7 @@
       self.nixosModules.base
       self.nixosModules.devices
       self.nixosModules.desktop
+      # self.nixosModules."plymouth-logorhythms"
 
       inputs.sops-nix.nixosModules.sops
 

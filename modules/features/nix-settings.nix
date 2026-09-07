@@ -21,10 +21,9 @@
 
     nixpkgs.overlays = [
       (final: prev: {
-        # ffmpeg 9.0 removed the AVVulkanDeviceContext fields moonlight-qt
-        # 6.1.0's Vulkan renderer still uses; pin to ffmpeg_7 until either
-        # side updates. https://github.com/moonlight-stream/moonlight-qt
-        moonlight-qt = prev.moonlight-qt.override {ffmpeg = prev.ffmpeg_7;};
+        # Pin Moonlight to ffmpeg 8: its Vulkan renderer does not yet support
+        # ffmpeg 9's AVVulkanDeviceContext API changes.
+        moonlight-qt = prev.moonlight-qt.override {ffmpeg_8 = prev.ffmpeg_8;};
       })
     ];
 

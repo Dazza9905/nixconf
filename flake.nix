@@ -8,6 +8,7 @@
     import-tree = {
       url = "github:vic/import-tree";
     };
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
     #bilt on top of wrappers
     wrapper-modules = {
       url = "github:BirdeeHub/nix-wrapper-modules";

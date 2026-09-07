@@ -40,9 +40,11 @@
       };
     };
     
-    # services.immich-public-proxy = {
+    # services.home-assistant = {
     #   enable = true;
     # };
+
+
 
     fileSystems."/mnt/860evo"= {
       device = "/dev/disk/by-uuid/449c6c1f-0f80-4e17-b5e2-00c40a6e8151";
