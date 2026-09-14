@@ -1,4 +1,3 @@
-# server-safe baseline shared by every host; desktop stuff stays per-host
 {self, ...}: {
   flake.nixosModules.base = {
     imports = [

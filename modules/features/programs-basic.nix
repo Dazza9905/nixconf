@@ -23,7 +23,7 @@
 
     users.users.${username} = {
       packages = with pkgs; [
-        self.packages.${pkgs.stdenv.hostPlatform.system}.myHelix
+        # self.packages.${pkgs.stdenv.hostPlatform.system}.myHelix
         github-cli
         kitty
         anki
@@ -75,7 +75,8 @@
       bitwarden-desktop
       bitwarden-cli
       cliamp
-      libreoffice
+      cisco-packet-tracer_9
+      codex
     ];
   };
 }

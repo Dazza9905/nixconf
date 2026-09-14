@@ -38,18 +38,14 @@
     packages.myNiri = inputs.wrapper-modules.wrappers.niri.wrap {
       inherit pkgs; # THIS PART IS VERY IMPORTAINT, I FORGOT IT IN THE VIDEO!!!
       runtimePkgs = [
-        # self'.packages.myNoctalia
+        pkgs.noctalia
         pkgs.xwayland-satellite
         pkgs.playerctl
         pkgs.kitty
       ];
       settings = {
         # bare minimum so noctalia is reachable at startup
-        # spawn-at-startup = [(lib.getExe self'.packages.myNoctalia)];
-        # spawn-at-startup = [(lib.getExe pkgs.noctalia)];
-        spawn-at-startup = [
-          (lib.getExe inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default)
-        ];
+        spawn-at-startup = [(lib.getExe pkgs.noctalia)];
         extraConfig = ''
           include optional=true "/home/dazza/.config/niri/config.kdl"
         '';
