@@ -23,22 +23,19 @@
 
     users.users.${username} = {
       packages = with pkgs; [
-        self.packages.${pkgs.stdenv.hostPlatform.system}.myHelix
-        github-cli
-        kitty
-        anki
-        vesktop
-        playerctl
-        claude-code
-        anki
-        playerctl
-        beeper
-        gparted
-        claude-code
-        moonlight-qt
-      ];
+             ];
     };
     environment.systemPackages = with pkgs; [
+      github-cli
+      kitty
+      anki
+      vesktop
+      playerctl
+      anki
+      playerctl
+      beeper
+      gparted
+      moonlight-qt
       pciutils
       lazygit
       neovim
@@ -64,7 +61,9 @@
       devenv
       t3code
       bitwarden-desktop
+      bitwarden-cli
       cliamp
+      libreoffice
     ];
   };
 }

@@ -3,6 +3,14 @@
   inputs,
   ...
 }: {
+  perSystem = {pkgs, ...}: {
+    packages.ze = pkgs.writeShellApplication {
+      name = "ze";
+      runtimeInputs = [pkgs.curl pkgs.jq];
+      text = builtins.readFile ./zen-extension.sh;
+    };
+  };
+
   flake.nixosModules.zen = {
     inputs,
     pkgs,
@@ -22,6 +30,7 @@
       "extensions.pocket.enabled" = false;
     };
 
+    # Generate an entry with: ze <Mozilla add-on URL or short ID>
     extensions = [
       (extension "bitwarden-password-manager" "{446900e4-71c2-419f-a6a7-df9c091e268b}")
       (extension "adnauseam" "adnauseam@rednoise.org")
@@ -29,9 +38,11 @@
       (extension "darkreader" "addon@darkreader.org")
       (extension "vimium-ff" "{d7742d87-e61d-4b78-b8a1-b469842139fa}")
       (extension "i-dont-care-about-cookies" "jid1-KKzOGWgsW3Ao4Q@jetpack")
+      (extension "unhook-ng" "@unhookng")
     ];
   in {
     environment.systemPackages = [
+      self.packages.${pkgs.stdenv.hostPlatform.system}.ze
       (
         pkgs.wrapFirefox
         inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.zen-browser-unwrapped

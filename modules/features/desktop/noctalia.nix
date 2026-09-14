@@ -17,7 +17,7 @@
     #   inherit pkgs;
     #   settings = raw.settings;
     # };
-    packages.myNoctalia = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    # packages.myNoctalia = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
     # packages.myNoctalia = inputs.noctalia.self'.default;
     #   inherit pkgs; # THIS PART IS VERY IMPORTAINT, I FORGOT IT IN THE VIDEO!!!
     #   settings =

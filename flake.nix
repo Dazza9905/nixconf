@@ -1,4 +1,8 @@
 {
+  nixConfig = {
+    extra-substituters = [ "https://noctalia.cachix.org" ];
+    extra-trusted-public-keys = [ "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=" ];
+  };
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
@@ -34,13 +38,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-citizen = {
-      url = "github:LovingMelody/nix-citizen";
+    codex-desktop-linux = {
+      url = "github:ilysenko/codex-desktop-linux";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     noctalia = {
-      url = "github:noctalia-dev/noctalia";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:noctalia-dev/noctalia/cachix";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
     noctalia-greeter = {
       url = "github:noctalia-dev/noctalia-greeter";
@@ -48,17 +53,22 @@
     };
 
     # Optional - updates underlying without waiting for nix-citizen to update
-    nix-gaming = {
-      url = "github:fufexan/nix-gaming";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nix-citizen.inputs.nix-gaming.follows = "nix-gaming";
+    # nix-gaming = {
+    #   url = "github:fufexan/nix-gaming";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+    # nix-citizen = {
+    #   url = "github:LovingMelody/nix-citizen";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+    # nix-citizen.inputs.nix-gaming.follows = "nix-gaming";
+    nix-citizen.url = "github:LovingMelody/nix-citizen";
 
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
+    whisper-dictation.url = "github:jacopone/whisper-dictation";
   };
 
   outputs = inputs:
