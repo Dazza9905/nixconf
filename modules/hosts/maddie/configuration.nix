@@ -15,6 +15,7 @@
       self.nixosModules.maddieSops
       self.nixosModules.time-lang
       self.nixosModules.homelab
+      self.nixosModules.nas
     ];
 
     nix.settings.auto-optimise-store = true;

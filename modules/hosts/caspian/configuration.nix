@@ -89,17 +89,17 @@
     };
 
     # mount nas
-    # fileSystems."/mnt/nas" = {
-    #   device = "192.168.100.21:/mnt/nas-data/files-dazza";
-    #   fsType = "nfs";
-    #   options = ["x-systemd.automount" "noauto"];
-    # };
-    #
-    # fileSystems."/mnt/nas-raw" = {
-    #   device = "192.168.100.21:/mnt/";
-    #   fsType = "nfs";
-    #   options = ["x-systemd.automount" "noauto"];
-    # };
+    fileSystems."/mnt/nas" = {
+      device = "192.168.100.21:/mnt/860evo/files-dazza";
+      fsType = "nfs";
+      options = ["x-systemd.automount" "noauto"];
+    };
+
+    fileSystems."/mnt/nas-raw" = {
+      device = "192.168.100.21:/mnt/";
+      fsType = "nfs";
+      options = ["x-systemd.automount" "noauto"];
+    };
 
     networking.networkmanager.enable = true;
     # This machine has Ethernet only; do not start an unused supplicant.

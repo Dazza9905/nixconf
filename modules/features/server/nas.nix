@@ -1,11 +1,5 @@
 {
   flake.nixosModules.nas = {...}: {
-    fileSystems."/mnt/nas-data" = {
-      device = "/dev/disk/by-partuuid/46da5bc8-01";
-      fsType = "ext4";
-      options = ["nofail"]; # server must still boot if the disk is unplugged
-    };
-
     # Share account only; no login shell by default, no home created.
     users.users.patrik = {
       isNormalUser = true;
@@ -23,12 +17,12 @@
           security = "user";
         };
         files-dazza = {
-          path = "/mnt/nas-data/files-dazza";
+          path = "/mnt/860evo/files-dazza";
           writable = "yes";
           "valid users" = "dazza";
         };
         files-patrik = {
-          path = "/mnt/nas-data/files-patrik";
+          path = "/mnt/860evo/files-patrik";
           writable = "yes";
           "valid users" = "patrik";
         };
@@ -44,8 +38,8 @@
     services.nfs.server = {
       enable = true;
       exports = ''
-        /mnt/nas-data/files-dazza  192.168.100.0/24(rw,no_subtree_check)
-        /mnt/nas-data/files-patrik 192.168.100.0/24(rw,no_subtree_check)
+        /mnt/860evo/files-dazza  192.168.100.0/24(rw,no_subtree_check)
+        /mnt/860evo/files-patrik 192.168.100.0/24(rw,no_subtree_check)
       '';
     };
     networking.firewall.allowedTCPPorts = [2049]; # NFSv4
