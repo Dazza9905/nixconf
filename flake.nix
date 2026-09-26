@@ -5,6 +5,8 @@
   };
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    # Keep Packet Tracer and its dependencies at the currently installed build.
+    nixpkgs-packet-tracer.url = "github:NixOS/nixpkgs/ef34387ddd751e1ab8857adf4676492d32eb24ec";
 
     flake-parts = {
       url = "github:hercules-ci/flake-parts";

@@ -88,6 +88,12 @@
                 IconURL = "https://noogle.dev/favicon.ico";
                 Alias = "@ng";
               }
+              {
+                Name = "MyNixOS";
+                URLTemplate = "https://mynixos.com/search?q={searchTerms}";
+                IconURL = "https://mynixos.com/favicon.ico";
+                Alias = "@mn";
+              }
             ];
           };
         }

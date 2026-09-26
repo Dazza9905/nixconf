@@ -120,11 +120,25 @@
       '';
     };
 
+    # Friendly command name for interactive use. With no arguments it toggles
+    # recording; explicit arguments are forwarded for backwards compatibility.
+    gpt-transcribe = pkgs.writeShellApplication {
+      name = "gpt-transcribe";
+      runtimeInputs = [gpt-dictate];
+      text = ''
+        if [ "$#" -eq 0 ] || { [ "$#" -eq 1 ] && [ "$1" = toggle ]; }; then
+          exec gpt-dictate toggle
+        fi
+        echo "usage: gpt-transcribe [toggle]" >&2
+        exit 2
+      '';
+    };
+
     desktop-entry = pkgs.makeDesktopItem {
       name = "gpt-dictate";
       desktopName = "GPT Dictation";
       comment = "Toggle speech dictation";
-      exec = "gpt-dictate toggle";
+      exec = "gpt-transcribe";
       icon = "audio-input-microphone";
       categories = ["Utility" "Accessibility"];
     };
@@ -142,7 +156,7 @@
     options.programs.gpt-dictate.enable = lib.mkEnableOption "small, shortcut-driven speech dictation";
 
     config = lib.mkIf cfg.enable {
-      environment.systemPackages = with packages; [gpt-dictate codex-stt-bridge desktop-entry pkgs.pipewire pkgs.wtype pkgs.kitty];
+      environment.systemPackages = with packages; [gpt-transcribe gpt-dictate codex-stt-bridge desktop-entry pkgs.pipewire pkgs.wtype pkgs.kitty];
     };
   };
 in {

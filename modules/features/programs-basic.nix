@@ -75,7 +75,10 @@
       bitwarden-desktop
       bitwarden-cli
       cliamp
-      cisco-packet-tracer_9
+      (import inputs.nixpkgs-packet-tracer {
+        system = pkgs.stdenv.hostPlatform.system;
+        config.allowUnfree = true;
+      }).cisco-packet-tracer_9
       codex
     ];
   };
