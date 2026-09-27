@@ -205,6 +205,11 @@
       xournalpp
       termshark
       wireshark
+      (import inputs.nixpkgs-packet-tracer {
+        system = pkgs.stdenv.hostPlatform.system;
+        config.allowUnfree = true;
+      }).cisco-packet-tracer_9
+
     ];
 
     system.stateVersion = "25.05"; # Did you read the comment?

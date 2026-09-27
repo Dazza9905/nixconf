@@ -51,6 +51,7 @@
       pciutils
       lazygit
       neovim
+      tree-sitter
       git
       stow
       fd
@@ -75,10 +76,6 @@
       bitwarden-desktop
       bitwarden-cli
       cliamp
-      (import inputs.nixpkgs-packet-tracer {
-        system = pkgs.stdenv.hostPlatform.system;
-        config.allowUnfree = true;
-      }).cisco-packet-tracer_9
       codex
     ];
   };

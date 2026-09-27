@@ -49,7 +49,10 @@ in
           downloadFromImmichConcurrencyLimit = 2;
 
           gallery = {
-            singleImage = true;
+            # Return the media file directly for one-item shares so services
+            # such as Discord can render images and playable videos natively.
+            singleImage = false;
+            singleVideo = false;
             singleItemAutoOpen = true;
             showTitle = true;
             showDescription = true;
