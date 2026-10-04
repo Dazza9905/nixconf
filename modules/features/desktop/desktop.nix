@@ -25,6 +25,7 @@
 
     programs.noctalia = {
       enable = true;
+      package = self.packages.${pkgs.stdenv.hostPlatform.system}.myNoctalia;
       # Enables NetworkManager, Bluetooth, UPower, and a power profile service.
       recommendedServices.enable = false;
     };
@@ -35,20 +36,33 @@
     self',
     ...
   }: let
-    # Use the upstream package built by Noctalia's Cachix workflow.
-    noctalia = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    # PAM loads the system's modules into Noctalia's process at unlock time.
+    # Build with system nixpkgs so libc, PAM, and Mesa stay compatible.
+    noctalia = pkgs.callPackage "${inputs.noctalia}/nix/package.nix" {
+      rev = inputs.noctalia.shortRev or "unknown";
+    };
   in {
+    packages.myNoctalia = pkgs.symlinkJoin {
+      name = "noctalia-compatible";
+      paths = [noctalia];
+      nativeBuildInputs = [pkgs.makeWrapper];
+      postBuild = ''
+        wrapProgram "$out/bin/noctalia" \
+          --set __EGL_VENDOR_LIBRARY_DIRS "${pkgs.mesa}/share/glvnd/egl_vendor.d"
+      '';
+      meta.mainProgram = "noctalia";
+    };
     packages.myNiri = inputs.wrapper-modules.wrappers.niri.wrap {
       inherit pkgs; # THIS PART IS VERY IMPORTAINT, I FORGOT IT IN THE VIDEO!!!
       runtimePkgs = [
-        noctalia
+        self'.packages.myNoctalia
         pkgs.xwayland-satellite
         pkgs.playerctl
         pkgs.kitty
       ];
       settings = {
         # bare minimum so noctalia is reachable at startup
-        spawn-at-startup = [(lib.getExe noctalia)];
+        spawn-at-startup = [(lib.getExe self'.packages.myNoctalia)];
         extraConfig = ''
           include optional=true "/home/dazza/.config/niri/config.kdl"
         '';

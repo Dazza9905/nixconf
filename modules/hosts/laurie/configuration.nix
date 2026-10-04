@@ -16,7 +16,9 @@
       self.nixosModules.printing
       self.nixosModules.gpt-dictate
       self.nixosModules.wooting
-      
+      self.nixosModules.remoteDesktop
+
+
       self.nixosModules.games
       self.nixosModules.networking
       self.nixosModules."programs-3d"

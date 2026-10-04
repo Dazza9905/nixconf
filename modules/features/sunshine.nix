@@ -3,7 +3,7 @@
   inputs,
   ...
 }: {
-  flake.nixosModules.sunshine = {
+  flake.nixosModules.remoteDesktop = {
     pkgs,
     lib,
     username,

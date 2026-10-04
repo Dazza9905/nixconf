@@ -35,6 +35,7 @@
         beeper
         gparted
         claude-code
+        tuios
       ];
     };
     environment.systemPackages = with pkgs; [
