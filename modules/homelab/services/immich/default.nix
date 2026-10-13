@@ -49,8 +49,6 @@ in
           downloadFromImmichConcurrencyLimit = 2;
 
           gallery = {
-            # Return the media file directly for one-item shares so services
-            # such as Discord can render images and playable videos natively.
             singleImage = false;
             singleVideo = false;
             singleItemAutoOpen = true;
@@ -106,36 +104,4 @@ in
 
   };
 
- #    # `earthdistance` is database state, not a PostgreSQL package option.  Keep
- #    # it convergent with the system configuration, and ensure Immich never
- #    # starts before the extensions it needs are available.  `earthdistance`
- #    # depends on `cube`.
- #    systemd.services.immich-postgresql-extensions = {
- #      description = "Provision PostgreSQL extensions required by Immich";
- #      after = [ "postgresql.target" ];
- #      requiredBy = [ "immich-server.service" ];
- #      before = [ "immich-server.service" ];
- #
- #      serviceConfig = {
- #        Type = "oneshot";
- #        User = "postgres";
- #      };
- #
- #      path = [ config.services.postgresql.package ];
- #      script = ''
- #        psql --dbname=immich --set=ON_ERROR_STOP=1 <<'SQL'
- #        CREATE EXTENSION IF NOT EXISTS cube;
- #        CREATE EXTENSION IF NOT EXISTS earthdistance;
- #        SQL
- #      '';
- #    };
- #
- #    networking.firewall = {
- #      enable = true;
- #      allowedTCPPorts = [ 2283 ];
- #    };
- #
- #  };
- #
- # gzip -dc /mnt/860evo/immich-app/data/backups/immich-db-backup-20260817T020000-v3.1.0-pg14.18.sql.gz | sudo -u postgres psql -v ON_ERROR_STOP=1 -d immich
 }

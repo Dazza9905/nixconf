@@ -56,6 +56,9 @@
     hardware.graphics = {
       enable = true;
       enable32Bit = true;
+      extraPackages = with pkgs; [
+        intel-compute-runtime
+      ];
     };
     hardware.nvidia = {
       modesetting.enable = true;
@@ -75,6 +78,8 @@
       "modesetting"
       "nvidia"
     ];
+
+
 
     networking = {
       networkmanager = {
@@ -189,7 +194,7 @@
         '';
       };
     };
-
+    services.gnome.core-apps.enable = true;
     users.users.dazza = {
       isNormalUser = true;
       description = "Daren Drahos";
@@ -207,12 +212,16 @@
       xournalpp
       termshark
       wireshark
-      (import inputs.nixpkgs-packet-tracer {
-        system = pkgs.stdenv.hostPlatform.system;
-        config.allowUnfree = true;
-      }).cisco-packet-tracer_9
-
+      obsidian
+      # Keep the pinned Packet Tracer recipe, but use current runtime libraries
+      # so the host Mesa driver can load without a GLIBC version mismatch.
+      (pkgs.callPackage
+        "${inputs.nixpkgs-packet-tracer}/pkgs/by-name/ci/cisco-packet-tracer_9/package.nix"
+        {})
+      activate-linux
+      davinci-resolve
     ];
+
 
     system.stateVersion = "25.05"; # Did you read the comment?
   };

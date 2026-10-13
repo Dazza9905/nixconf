@@ -21,6 +21,11 @@
       enable = true;
     };
 
+    programs.zoxide = {
+      enable = true;
+      enableFishIntegration = true;
+    };
+
     users.users.${username} = {
       packages = with pkgs; [
         # self.packages.${pkgs.stdenv.hostPlatform.system}.myHelix

@@ -7,3 +7,6 @@ result-*
 
 # Ignore NixOS interactive test driver history
 **/.nixos-test-history
+
+# Cisco installers must be supplied locally and kept out of Git.
+CiscoPacketTracer_*.deb
