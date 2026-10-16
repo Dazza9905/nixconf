@@ -41,6 +41,13 @@
       (extension "unhook-ng" "@unhookng")
     ];
   in {
+    xdg.mime.defaultApplications = {
+      "x-scheme-handler/http" = "zen.desktop";
+      "x-scheme-handler/https" = "zen.desktop";
+      "text/html" = "zen.desktop";
+      "application/xhtml+xml" = "zen.desktop";
+    };
+
     environment.systemPackages = [
       self.packages.${pkgs.stdenv.hostPlatform.system}.ze
       (

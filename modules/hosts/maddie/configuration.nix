@@ -24,7 +24,8 @@
       dates = "weekly";
       options = "--delete-older-than 14d";
     };
-    homelab = { enable = true;
+    homelab = { 
+      enable = true;
       mount = "/mnt/860evo";
 
       services = {

@@ -322,22 +322,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-packet-tracer": {
-      "locked": {
-        "lastModified": 1789286504,
-        "narHash": "sha256-eiEK7cKZORNEvX0GeF3RtNEF/JXhgf2RqSp3230q13E=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "ef34387ddd751e1ab8857adf4676492d32eb24ec",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "ef34387ddd751e1ab8857adf4676492d32eb24ec",
-        "type": "github"
-      }
-    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1791048980,
@@ -356,19 +340,6 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1790822859,
-        "narHash": "sha256-VBA0QerzzmL+4wxgtwiCdiLwLpJg2/9xOxhgO3BRJQA=",
-        "rev": "c59305bab2065cfecc4944690d9eedbb56f3a9fa",
-        "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1083223.c59305bab206/nixexprs.tar.zst"
-      },
-      "original": {
-        "type": "tarball",
-        "url": "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst"
-      }
-    },
-    "nixpkgs_4": {
-      "locked": {
         "lastModified": 1759036355,
         "narHash": "sha256-0m27AKv6ka+q270dw48KflE0LwQYrO7Fm4/2//KCVWg=",
         "owner": "nixos",
@@ -380,25 +351,6 @@
         "owner": "nixos",
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "noctalia": {
-      "inputs": {
-        "nixpkgs": "nixpkgs_3"
-      },
-      "locked": {
-        "lastModified": 1791048152,
-        "narHash": "sha256-R+cq28uDVDRY//7BjWXh/oKGv+yIrDsuFJJX9H41yEo=",
-        "owner": "noctalia-dev",
-        "repo": "noctalia",
-        "rev": "e639a87e811ad3268c73f6d5e77669c94184ba15",
-        "type": "github"
-      },
-      "original": {
-        "owner": "noctalia-dev",
-        "ref": "cachix",
-        "repo": "noctalia",
         "type": "github"
       }
     },
@@ -432,8 +384,6 @@
         "nix-flatpak": "nix-flatpak",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
-        "nixpkgs-packet-tracer": "nixpkgs-packet-tracer",
-        "noctalia": "noctalia",
         "noctalia-greeter": "noctalia-greeter",
         "sops-nix": "sops-nix",
         "whisper-dictation": "whisper-dictation",
@@ -547,7 +497,7 @@
     "whisper-dictation": {
       "inputs": {
         "flake-utils": "flake-utils_2",
-        "nixpkgs": "nixpkgs_4"
+        "nixpkgs": "nixpkgs_3"
       },
       "locked": {
         "lastModified": 1785743674,

@@ -1,6 +1,9 @@
 { self, inputs, ... }: {
-  flake.nixosModules.homelab = { lib, config, ... }:
-  {
+  flake.nixosModules.homelab = {
+    lib,
+    config,
+    ...
+  }: {
 # =======================================================
 # IMPORTS
 # =======================================================

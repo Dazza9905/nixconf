@@ -9,6 +9,8 @@
     ...
   }: {
     programs.noctalia-greeter.enable = true;
+    # Temporarily use the standard greeter while touch-keyboard support is in progress.
+    # services.displayManager.noctalia-greeter.package = self.packages.${pkgs.stdenv.hostPlatform.system}.touch-greeter;
 
     services.gnome.gnome-keyring.enable = true;
     services.udisks2.enable = true;
@@ -25,5 +27,13 @@
       };
       wantedBy = ["graphical-session.target"];
     };
+  };
+  perSystem = {pkgs, ...}: {
+    packages.touch-greeter = (pkgs.callPackage "${inputs.noctalia-greeter}/nix/package.nix" {}).overrideAttrs (old: {
+      patches = (old.patches or []) ++ [./touch/greeter-osk.patch];
+      postPatch = (old.postPatch or "") + ''
+        cp ${./touch/greeter-keyboard.inc} src/greeter/touch_keyboard.inc
+      '';
+    });
   };
 }

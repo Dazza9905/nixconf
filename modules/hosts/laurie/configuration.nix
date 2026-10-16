@@ -18,7 +18,6 @@
       self.nixosModules.wooting
       self.nixosModules.remoteDesktop
 
-
       self.nixosModules.games
       self.nixosModules.networking
       self.nixosModules."programs-3d"
@@ -78,8 +77,8 @@
       "modesetting"
       "nvidia"
     ];
-
-
+    
+    programs.wireshark.enable = true;
 
     networking = {
       networkmanager = {
@@ -90,8 +89,13 @@
       };
       # Pangolin ignores 127.0.0.0/8 when discovering upstream resolvers.
       # This address stays on lo; it is not a DNS server exposed on Wi-Fi.
-      interfaces.lo.ipv4.addresses = [{ address = "192.0.2.53"; prefixLength = 32; }];
-      nameservers = [ "192.0.2.53" ];
+      interfaces.lo.ipv4.addresses = [
+        {
+          address = "192.0.2.53";
+          prefixLength = 32;
+        }
+      ];
+      nameservers = ["192.0.2.53"];
     };
 
     services.resolved = {
@@ -107,8 +111,8 @@
     services.dnsproxy = {
       enable = true;
       settings = {
-        listen-addrs = [ "192.0.2.53" ];
-        listen-ports = [ 53 ];
+        listen-addrs = ["192.0.2.53"];
+        listen-ports = [53];
         cache = true;
         # IP endpoints avoid bootstrapping DoH through filtered plain DNS.
         upstream = [
@@ -120,8 +124,8 @@
       };
     };
     systemd.services.dnsproxy = {
-      requires = [ "network-addresses-lo.service" ];
-      after = [ "network-addresses-lo.service" ];
+      requires = ["network-addresses-lo.service"];
+      after = ["network-addresses-lo.service"];
     };
 
     # battery and asus stuff
@@ -176,7 +180,6 @@
     #   };
     # };
 
-
     programs.gpt-dictate.enable = true;
 
     # The ALC285 defaults to maximum capture gain plus 30 dB mic boost on this
@@ -198,9 +201,16 @@
     users.users.dazza = {
       isNormalUser = true;
       description = "Daren Drahos";
-      extraGroups = ["networkmanager" "wheel"];
+      extraGroups = ["networkmanager" "wheel" "wireshark"];
       packages = with pkgs; [
       ];
+    };
+
+    settings = {
+      enable = true;
+      remoteDesktop = {
+        client = true;
+      };
     };
 
     environment.systemPackages = with pkgs; [
@@ -210,18 +220,10 @@
       net-tools
       pangolin-cli
       xournalpp
-      termshark
-      wireshark
       obsidian
-      # Keep the pinned Packet Tracer recipe, but use current runtime libraries
-      # so the host Mesa driver can load without a GLIBC version mismatch.
-      (pkgs.callPackage
-        "${inputs.nixpkgs-packet-tracer}/pkgs/by-name/ci/cisco-packet-tracer_9/package.nix"
-        {})
+      cisco-packet-tracer_9
       activate-linux
-      davinci-resolve
     ];
-
 
     system.stateVersion = "25.05"; # Did you read the comment?
   };

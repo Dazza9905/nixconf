@@ -3,6 +3,22 @@
   inputs,
   ...
 }: {
+  perSystem = {pkgs, ...}: {
+    packages.clipboardImageEditor = pkgs.writeShellApplication {
+      name = "edit-clipboard-image";
+      runtimeInputs = [pkgs.satty pkgs.wl-clipboard pkgs.libnotify pkgs.coreutils];
+      text = ''
+        image=$(mktemp)
+        trap 'rm -f "$image"' EXIT
+        if ! wl-paste --type image --no-newline > "$image" || [ ! -s "$image" ]; then
+          notify-send "Clipboard Image Editor" "Copy an image first, then try again."
+          exit 1
+        fi
+        satty --filename "$image"
+      '';
+    };
+  };
+
   flake.nixosModules.programs-basic = {
     pkgs,
     lib,
@@ -44,6 +60,9 @@
       ];
     };
     environment.systemPackages = with pkgs; [
+      self.packages.${pkgs.stdenv.hostPlatform.system}.clipboardImageEditor
+      satty
+      wl-clipboard
       github-cli
       kitty
       anki
@@ -53,7 +72,6 @@
       playerctl
       beeper
       gparted
-      moonlight-qt
       pciutils
       lazygit
       neovim
