@@ -45,7 +45,14 @@
     # services.home-assistant = {
     #   enable = true;
     # };
+    #
+    users.groups.nas-files.gid = 1000;
 
+    users.users.dazza = {
+      isNormalUser = true;
+      createHome = false;
+      extraGroups = [ "nas-files" ];
+    };
 
 
     fileSystems."/mnt/860evo"= {

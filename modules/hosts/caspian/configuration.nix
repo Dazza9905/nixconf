@@ -13,9 +13,9 @@
       self.nixosModules.base
       self.nixosModules.devices
       self.nixosModules.desktop
+      self.nixosModules.remoteDesktop
 
       self.nixosModules.gpt-dictate
-      # self.nixosModules."plymouth-logorhythms"
 
       inputs.sops-nix.nixosModules.sops
 
@@ -25,7 +25,6 @@
       self.nixosModules.prusaslicer3
       self.nixosModules.starcitizen
       self.nixosModules."programs-3d"
-      self.nixosModules.sunshine
       self.nixosModules.wooting
     ];
 
@@ -127,7 +126,13 @@
       packages = with pkgs; [
       ];
     };
-
+    settings = {
+      enable = true;
+      remoteDesktop = {
+        server = true;
+        client = true;
+      };
+    };
     environment.systemPackages = with pkgs; [
       google-chrome
       kdePackages.dolphin
