@@ -39,7 +39,8 @@
     services.nfs.server = {
       enable = true;
       exports = ''
-        /mnt/860evo/files-dazza  192.168.100.0/24(rw,no_subtree_check)
+        # Laurie's NetBird address is outside the LAN subnet.
+        /mnt/860evo/files-dazza  192.168.100.0/24(rw,no_subtree_check) 100.90.128.3(rw,no_subtree_check)
         /mnt/860evo/files-patrik 192.168.100.0/24(rw,no_subtree_check)
       '';
     };

@@ -62,6 +62,7 @@
       btop
       htop
       systemctl-tui
+      devenv
     ];
 
 

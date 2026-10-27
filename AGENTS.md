@@ -29,3 +29,10 @@
 - Keep changes small and preserve unrelated user edits. Run targeted evaluation
   checks; leave full NixOS builds and rebuilds to the user unless explicitly asked.
 - Report what changed, what was checked, and what still needs activation or testing.
+# User preferences
+
+- Manage system configuration, packages, and development environments declaratively through their existing configuration files.
+- Never use `nix profile` or imperative package installation commands such as `nix-env -i`.
+- Do not introduce imperative installation steps, persistent shell workarounds, or manual environment changes as substitutes for fixing declarative configuration or the underlying software.
+- Read-only inspection and temporary builds or tests are allowed. Keep persistent changes in declarative configuration; do not switch to an imperative installation when a declarative build is difficult.
+- For Nix work, read the global skill at `/home/dazza/.codex/skills/nix/SKILL.md`. Maintain it as needed with reusable preferences and verified lessons, keeping project-specific details out.
