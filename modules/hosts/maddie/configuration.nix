@@ -30,8 +30,13 @@
 
       services = {
 
+        backup = {
+          enable = true;
+        };
+
         immich = {
           enable = true;
+          backup.enable = true;
           mediaDir = "/mnt/860evo/immich-app/data";
           ipp = true;
         };

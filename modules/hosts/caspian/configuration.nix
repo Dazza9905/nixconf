@@ -14,16 +14,17 @@
       self.nixosModules.devices
       self.nixosModules.desktop
       self.nixosModules.remoteDesktop
+      self.nixosModules.kvm
+      self.nixosModules.razer
 
       self.nixosModules.gpt-dictate
 
       inputs.sops-nix.nixosModules.sops
 
       self.nixosModules.games
+      self.nixosModules.scripts
       self.nixosModules.gamedev
-      self.nixosModules.networking
-      self.nixosModules.prusaslicer3
-      self.nixosModules.starcitizen
+      # self.nixosModules.starcitizen
       self.nixosModules."programs-3d"
       self.nixosModules.wooting
     ];
@@ -51,10 +52,21 @@
     };
     networking.hostName = "caspian";
 
-    # BIOS GRUB belongs on the disk containing the Linux root filesystem.
-    # /dev/nvme0n1 is the separate GPT Windows disk and has no BIOS Boot partition.
+    sops.age.keyFile = "/var/lib/sops-nix/keys.txt";
+    settings.kvm = {
+      enable = true;
+      role = "server";
+      serverAddress = "192.168.100.26";
+      allowedSubnet = "192.168.100.0/24";
+      switchKeys = ["left-ctrl" "left-alt" "tab"];
+      certificate = ../../../secrets/rkvm-certificate.pem;
+      passwordSopsFile = ../../../secrets/rkvm.yaml;
+      keySopsFile = ../../../secrets/rkvm-server.yaml;
+    };
+
+    # Install BIOS GRUB on the Linux SSD; NVMe device numbers can change at boot.
     boot.loader.grub.enable = true;
-    boot.loader.grub.device = "/dev/nvme1n1";
+    boot.loader.grub.device = "/dev/disk/by-id/nvme-eui.0025385181b21abd";
     boot.loader.grub.useOSProber = true;
     boot.loader.timeout = 1;
     boot.loader.grub.gfxmodeBios = "1920x1080,auto";
@@ -112,6 +124,27 @@
     security.polkit.enable = true;
     networking.firewall.allowedTCPPorts = [3773];
 
+    # Keep the backend available over Pangolin without the Electron desktop app.
+    systemd.user.services.t3code = {
+      description = "T3 Code backend";
+      wantedBy = ["default.target"];
+      unitConfig.ConditionUser = "dazza";
+      path = [
+        "/etc/profiles/per-user/dazza"
+        "/run/current-system/sw"
+        "/home/dazza/.nix-profile"
+        "/home/dazza/.local"
+        pkgs.git pkgs.openssh pkgs.bash pkgs.coreutils
+      ];
+      serviceConfig = {
+        WorkingDirectory = "%h";
+        ExecStart = "${pkgs.t3code}/bin/t3 serve --base-dir %h/.t3 --host 0.0.0.0 --port 3773";
+        Restart = "on-failure";
+        RestartSec = 5;
+        KillMode = "mixed";
+      };
+    };
+
     programs.gpt-dictate.enable = true;
 
 
@@ -120,6 +153,7 @@
 
     users.users.dazza = {
       uid = 1000;
+      linger = true;
       isNormalUser = true;
       description = "Daren Drahos";
       extraGroups = ["networkmanager" "wheel" "storage" "dialout" "input"];
@@ -132,17 +166,15 @@
         server = true;
         client = true;
       };
+      razer.enable = true;
     };
     environment.systemPackages = with pkgs; [
-      google-chrome
-      kdePackages.dolphin
-      kdePackages.kio # needed since 25.11
-      kdePackages.kio-fuse #to mount remote filesystems via FUSE
-      kdePackages.kio-extras #extra protocols support (sftp, fish and more)
       rsync
       rclone
       age
       sops
+      graphite
+      t3code
     ];
 
     system.autoUpgrade = {

@@ -10,6 +10,11 @@
   }: {
     programs.yazi = {
       enable = true;
+      initLua = pkgs.writeText "yazi-init.lua" ''
+        require("session"):setup {
+          sync_yanked = true,
+        }
+      '';
       settings.yazi = {
         opener.image = [{
           run = "${lib.getExe pkgs.imv} -- %s";

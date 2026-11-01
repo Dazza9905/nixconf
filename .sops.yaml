@@ -1,7 +1,17 @@
 keys:
   - &maddie age1w2e77686e6j87pvapn4uey50mlq9qwdx5knuspq2776hrkesj58qgl3qt4
   - &caspian age165gk3m94v9fptkx2afd4cn5fc4y0ne53zk2fecscpkwl9lgxf4esktx3ue
+  - &laurie age1spw0rxjzcpmuksqcxqk8cy9m7zcg2lsydc4yg4q7fmajl0r0wcxqkzhqye
 creation_rules:
+  - path_regex: secrets/rkvm\.yaml$
+    key_groups:
+    - age:
+      - *caspian
+      - *laurie
+  - path_regex: secrets/rkvm-server\.yaml$
+    key_groups:
+    - age:
+      - *caspian
   - path_regex: secrets/maddie\.yaml$
     key_groups:
     - age:

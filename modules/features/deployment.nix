@@ -12,8 +12,8 @@
   in {
     environment.systemPackages = [
       inputs.colmena.packages.${system}.colmena
-      self.packages.${system}.rebuild
-      self.packages.${system}.deploy
+      # self.packages.${system}.rebuild
+      # self.packages.${system}.deploy
     ];
 
     # colmena deploys as root over SSH; key-only — password login for root stays impossible
@@ -24,75 +24,75 @@
     ];
   };
 
-  perSystem = {
-    pkgs,
-    lib,
-    ...
-  }: let
-    # Colmena builds through its own flake; pass cache settings to every Nix
-    # invocation, including the first rebuild before nix.settings is activated.
-    cacheOptions = lib.escapeShellArgs [
-      "--nix-option" "extra-substituters" "https://noctalia.cachix.org"
-      "--nix-option" "extra-trusted-public-keys" "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
-    ];
-  in {
-    packages.rebuild = pkgs.writeShellApplication {
-      name = "rebuild";
-      excludeShellChecks = ["SC2024"];
-      text = ''
-        alejandra="${lib.getExe pkgs.alejandra}"
-        notify_send="${lib.getExe' pkgs.libnotify "notify-send"}"
-        git="${lib.getExe pkgs.git}"
-        CONFIG_DIR="$HOME/.nixconf/"
-        LOG="/tmp/nixos-switch.log"
-        DOTFILES_DIR="$HOME/.dotfiles/"
-
-
-        pushd "$CONFIG_DIR" >/dev/null
-        echo "Formatting nix files..."
-        "$alejandra" . &>/dev/null || {
-            "$alejandra" .
-            echo "formatting failed!"
-            "$notify_send" -u critical -e "NixOS Rebuild" "Formatting failed"
-            popd >/dev/null
-            exit 1
-        }
-        current="."
-        echo "Changes:"
-        "$git" diff
-        echo "NixOS rebuilding (colmena apply-local)..."
-        # `sudo colmena`, NOT `colmena apply-local --sudo`: --sudo re-execs the
-        # resolved /nix/store path, which the scoped NOPASSWD rule for
-        # /run/current-system/sw/bin/colmena cannot match.
-        if sudo colmena ${cacheOptions} apply-local &>"$LOG"; then
-            gen=$(readlink /nix/var/nix/profiles/system | grep -oE '[0-9]+')
-            current="gen $gen ($(date '+%Y-%m-%d %H:%M:%S'))"
-            echo "Current generation: $current"
-            "$git" commit -am "$current"
-            "$notify_send" -e "NixOS Rebuilt OK!" --icon=software-update-available
-        else
-            echo "Rebuild failed, errors below:"
-            grep --color=always -i error "$LOG" || cat "$LOG"
-            ERR_SUMMARY=$(grep -i error "$LOG" | head -n 3)
-            "$notify_send" -u critical -e "NixOS Rebuild Failed" "''${ERR_SUMMARY:-Check $LOG for details}"
-            popd >/dev/null
-            exit 1
-        fi
-        cd "$DOTFILES_DIR"
-        "$git" add .
-        "$git" commit -am "$current"
-        popd >/dev/null
-      '';
-    };
-
-    packages.deploy = pkgs.writeShellApplication {
-      name = "deploy";
-      text = ''
-        cd "$HOME/.nixconf"
-        target="''${1:?usage: deploy <node|@tag> [extra colmena args...]}"
-        shift
-        exec colmena ${cacheOptions} apply --on "$target" "$@"
-      '';
-    };
-  };
+  # perSystem = {
+  #   pkgs,
+  #   lib,
+  #   ...
+  # }: let
+  #   # Colmena builds through its own flake; pass cache settings to every Nix
+  #   # invocation, including the first rebuild before nix.settings is activated.
+  #   cacheOptions = lib.escapeShellArgs [
+  #     "--nix-option" "extra-substituters" "https://noctalia.cachix.org"
+  #     "--nix-option" "extra-trusted-public-keys" "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+  #   ];
+  # in {
+  #   packages.rebuild = pkgs.writeShellApplication {
+  #     name = "rebuild";
+  #     excludeShellChecks = ["SC2024"];
+  #     text = ''
+  #       alejandra="${lib.getExe pkgs.alejandra}"
+  #       notify_send="${lib.getExe' pkgs.libnotify "notify-send"}"
+  #       git="${lib.getExe pkgs.git}"
+  #       CONFIG_DIR="$HOME/.nixconf/"
+  #       LOG="/tmp/nixos-switch.log"
+  #       DOTFILES_DIR="$HOME/.dotfiles/"
+  #
+  #
+  #       pushd "$CONFIG_DIR" >/dev/null
+  #       echo "Formatting nix files..."
+  #       "$alejandra" . &>/dev/null || {
+  #           "$alejandra" .
+  #           echo "formatting failed!"
+  #           "$notify_send" -u critical -e "NixOS Rebuild" "Formatting failed"
+  #           popd >/dev/null
+  #           exit 1
+  #       }
+  #       current="."
+  #       echo "Changes:"
+  #       "$git" diff
+  #       echo "NixOS rebuilding (colmena apply-local)..."
+  #       # `sudo colmena`, NOT `colmena apply-local --sudo`: --sudo re-execs the
+  #       # resolved /nix/store path, which the scoped NOPASSWD rule for
+  #       # /run/current-system/sw/bin/colmena cannot match.
+  #       if sudo colmena ${cacheOptions} apply-local &>"$LOG"; then
+  #           gen=$(readlink /nix/var/nix/profiles/system | grep -oE '[0-9]+')
+  #           current="gen $gen ($(date '+%Y-%m-%d %H:%M:%S'))"
+  #           echo "Current generation: $current"
+  #           "$git" commit -am "$current"
+  #           "$notify_send" -e "NixOS Rebuilt OK!" --icon=software-update-available
+  #       else
+  #           echo "Rebuild failed, errors below:"
+  #           grep --color=always -i error "$LOG" || cat "$LOG"
+  #           ERR_SUMMARY=$(grep -i error "$LOG" | head -n 3)
+  #           "$notify_send" -u critical -e "NixOS Rebuild Failed" "''${ERR_SUMMARY:-Check $LOG for details}"
+  #           popd >/dev/null
+  #           exit 1
+  #       fi
+  #       cd "$DOTFILES_DIR"
+  #       "$git" add .
+  #       "$git" commit -am "$current"
+  #       popd >/dev/null
+  #     '';
+  #   };
+  #
+  #   packages.deploy = pkgs.writeShellApplication {
+  #     name = "deploy";
+  #     text = ''
+  #       cd "$HOME/.nixconf"
+  #       target="''${1:?usage: deploy <node|@tag> [extra colmena args...]}"
+  #       shift
+  #       exec colmena ${cacheOptions} apply --on "$target" "$@"
+  #     '';
+  #   };
+  # };
 }

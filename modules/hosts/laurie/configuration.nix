@@ -17,13 +17,22 @@
       self.nixosModules.gpt-dictate
       self.nixosModules.wooting
       self.nixosModules.remoteDesktop
+      self.nixosModules.kvm
 
       self.nixosModules.games
-      self.nixosModules.networking
       self.nixosModules."programs-3d"
     ];
 
     networking.hostName = "laurie";
+
+    sops.age.keyFile = "/var/lib/sops-nix/keys.txt";
+    settings.kvm = {
+      enable = true;
+      role = "client";
+      serverAddress = "192.168.100.26";
+      certificate = ../../../secrets/rkvm-certificate.pem;
+      passwordSopsFile = ../../../secrets/rkvm.yaml;
+    };
 
     # bootloader
     boot.loader.systemd-boot.enable = true;
@@ -31,8 +40,7 @@
     boot.loader.timeout = 1;
     boot.kernelPackages = pkgs.linuxPackages_latest;
 
-    # faster initrd: systemd stage-1 + zstd compression
-    boot.initrd.systemd.enable = true;
+    # faster initrd: zstd compression (systemd stage-1 is now mandatory)
     boot.initrd.compressor = "zstd";
 
     # skip waiting for a full network connection before declaring boot done

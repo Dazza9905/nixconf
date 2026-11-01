@@ -4,6 +4,12 @@
   ...
 }: {
   perSystem = {pkgs, ...}: {
+    # The same editor tools on another machine, without rebuilding NixOS.
+    devShells.nix = pkgs.mkShellNoCC {
+      packages = with pkgs; [neovim nixd alejandra];
+      NIX_PATH = "nixpkgs=${inputs.nixpkgs}";
+    };
+
     packages.clipboardImageEditor = pkgs.writeShellApplication {
       name = "edit-clipboard-image";
       runtimeInputs = [pkgs.satty pkgs.wl-clipboard pkgs.libnotify pkgs.coreutils];
@@ -45,18 +51,6 @@
     users.users.${username} = {
       packages = with pkgs; [
         # self.packages.${pkgs.stdenv.hostPlatform.system}.myHelix
-        github-cli
-        kitty
-        anki
-        vesktop
-        playerctl
-        claude-code
-        anki
-        playerctl
-        beeper
-        gparted
-        claude-code
-        tuios
       ];
     };
     environment.systemPackages = with pkgs; [
@@ -69,12 +63,13 @@
       vesktop
       playerctl
       anki
-      playerctl
       beeper
       gparted
       pciutils
       lazygit
       neovim
+      nixd
+      alejandra
       tree-sitter
       git
       stow
@@ -96,11 +91,10 @@
       libnotify
       brightnessctl
       devenv
-      t3code
       bitwarden-desktop
       bitwarden-cli
-      cliamp
       codex
+      obsidian
     ];
   };
 }

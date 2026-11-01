@@ -25,5 +25,9 @@
     programs.nix-ld.enable = true;
 
     nix.settings.experimental-features = ["nix-command" "flakes"];
+
+    # Keep CLI package completion and language servers on our locked nixpkgs.
+    nix.registry.nixpkgs.flake = inputs.nixpkgs;
+    nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"];
   };
 }
