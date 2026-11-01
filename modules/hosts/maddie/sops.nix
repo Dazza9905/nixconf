@@ -6,12 +6,9 @@
   flake.nixosModules.maddieSops = {
 
     imports = [
-      inputs.sops-nix.nixosModules.sops
+      self.nixosModules.sops
     ];
 
     sops.defaultSopsFile = ../../../secrets/maddie.yaml;
-
-
-
   };
 }

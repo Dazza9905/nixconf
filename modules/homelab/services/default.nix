@@ -6,7 +6,9 @@
     imports = [
       ./backup
       ./immich
+      ./kvm
       ./newt
+      ./t3code
     ];
 # =======================================================
 # OPTIONS

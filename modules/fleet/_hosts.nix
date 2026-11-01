@@ -11,7 +11,7 @@
   # NOTEBOOK
   laurie = { 
     system = "x86_64-linux";
-    targetHost = "flow-z13.lan";
+    targetHost = "192.168.100.18";
     targetUser = "root";
     tags = ["laptop" "x86"];
     allowLocalDeployment = true;

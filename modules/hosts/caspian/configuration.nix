@@ -6,6 +6,7 @@
   flake.nixosModules.caspianConfiguration = {
     pkgs,
     lib,
+    username,
     ...
   }: {
     imports = [
@@ -14,12 +15,12 @@
       self.nixosModules.devices
       self.nixosModules.desktop
       self.nixosModules.remoteDesktop
-      self.nixosModules.kvm
+      self.nixosModules.homelab
       self.nixosModules.razer
 
       self.nixosModules.gpt-dictate
 
-      inputs.sops-nix.nixosModules.sops
+      self.nixosModules.sops
 
       self.nixosModules.games
       self.nixosModules.scripts
@@ -52,8 +53,7 @@
     };
     networking.hostName = "caspian";
 
-    sops.age.keyFile = "/var/lib/sops-nix/keys.txt";
-    settings.kvm = {
+    homelab.services.kvm = {
       enable = true;
       role = "server";
       serverAddress = "192.168.100.26";
@@ -122,26 +122,29 @@
     # Type=idle adds an intentional ~5 second delay before the greeter process.
     systemd.services.greetd.serviceConfig.Type = lib.mkForce "simple";
     security.polkit.enable = true;
-    networking.firewall.allowedTCPPorts = [3773];
 
-    # Keep the backend available over Pangolin without the Electron desktop app.
-    systemd.user.services.t3code = {
-      description = "T3 Code backend";
-      wantedBy = ["default.target"];
-      unitConfig.ConditionUser = "dazza";
-      path = [
-        "/etc/profiles/per-user/dazza"
-        "/run/current-system/sw"
-        "/home/dazza/.nix-profile"
-        "/home/dazza/.local"
-        pkgs.git pkgs.openssh pkgs.bash pkgs.coreutils
-      ];
-      serviceConfig = {
-        WorkingDirectory = "%h";
-        ExecStart = "${pkgs.t3code}/bin/t3 serve --base-dir %h/.t3 --host 0.0.0.0 --port 3773";
-        Restart = "on-failure";
-        RestartSec = 5;
-        KillMode = "mixed";
+    homelab.services = {
+      newt = {
+        enable = true;
+      };
+      t3code = {
+        enable = true;
+        user = username;
+        host = "0.0.0.0";
+        port = 3773;
+        extraPackages = with pkgs; [
+          python3
+          uv
+          nodejs
+          sqlite
+          jq
+          file
+          binutils
+          poppler-utils
+          psmisc
+          patchelf
+          ripgrep
+        ];
       };
     };
 
@@ -153,7 +156,6 @@
 
     users.users.dazza = {
       uid = 1000;
-      linger = true;
       isNormalUser = true;
       description = "Daren Drahos";
       extraGroups = ["networkmanager" "wheel" "storage" "dialout" "input"];

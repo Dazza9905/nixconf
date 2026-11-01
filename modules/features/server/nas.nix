@@ -2,6 +2,7 @@
   flake.nixosModules.nas = {...}: {
     # Share account only; no login shell by default, no home created.
     users.users.patrik = {
+      uid = 1011;
       isNormalUser = true;
       createHome = false;
     };

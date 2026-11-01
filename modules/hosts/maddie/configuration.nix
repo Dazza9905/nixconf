@@ -16,14 +16,9 @@
       self.nixosModules.time-lang
       self.nixosModules.homelab
       self.nixosModules.nas
+      self.nixosModules.nix-settings
     ];
 
-    nix.settings.auto-optimise-store = true;
-    nix.gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 14d";
-    };
     homelab = { 
       enable = true;
       mount = "/mnt/860evo";
@@ -46,14 +41,11 @@
         };
       };
     };
-    
-    # services.home-assistant = {
-    #   enable = true;
-    # };
-    #
+
     users.groups.nas-files.gid = 1000;
 
     users.users.dazza = {
+      uid = 1000;
       isNormalUser = true;
       createHome = false;
       extraGroups = [ "nas-files" ];
@@ -67,6 +59,7 @@
     };
 
     environment.systemPackages = with pkgs; [
+      btop
       htop
       systemctl-tui
     ];
@@ -74,9 +67,9 @@
 
     networking.firewall.enable = true;
     networking.firewall.allowedTCPPorts = [
-      22 2283
+      22
     ];
-    nix.settings.experimental-features = ["nix-command" "flakes"];
+
     # ------------------------------------------------------------------
     # RPI5 STUFF
     # ------------------------------------------------------------------

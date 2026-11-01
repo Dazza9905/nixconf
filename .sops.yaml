@@ -1,5 +1,8 @@
 keys:
-  - &maddie age1w2e77686e6j87pvapn4uey50mlq9qwdx5knuspq2776hrkesj58qgl3qt4
+  - &dazza age17pzhjzmd7yzvkne33vj9rgjwsa783pv5n64y72d97fkgxpvesdtqvsdxhz
+  - &maddie age19r3lptunv7hx5uswmywye76xxp3e7d2ccqv9redm78sxwd8ss98q6n6adc
+  # Keep the old recipient until maddie's updated system has been activated.
+  - &maddie_ssh age1w2e77686e6j87pvapn4uey50mlq9qwdx5knuspq2776hrkesj58qgl3qt4
   - &caspian age165gk3m94v9fptkx2afd4cn5fc4y0ne53zk2fecscpkwl9lgxf4esktx3ue
   - &laurie age1spw0rxjzcpmuksqcxqk8cy9m7zcg2lsydc4yg4q7fmajl0r0wcxqkzhqye
 creation_rules:
@@ -8,13 +11,17 @@ creation_rules:
     - age:
       - *caspian
       - *laurie
+      - *dazza
   - path_regex: secrets/rkvm-server\.yaml$
     key_groups:
     - age:
       - *caspian
+      - *dazza
   - path_regex: secrets/maddie\.yaml$
     key_groups:
     - age:
       - *maddie
+      - *maddie_ssh
       - *caspian
+      - *dazza
 

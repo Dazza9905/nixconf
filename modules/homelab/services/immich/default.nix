@@ -45,9 +45,9 @@ in
       openFirewall = true;
       settings = {
         ipp = {
-          downloadOriginalPhoto = true;
+          maxDownloadQuality = "original";
           downloadedFilename = 0;
-          allowDownloadAll = 1;
+          allowDownload = 1;
           downloadFromImmichConcurrencyLimit = 2;
 
           gallery = {
@@ -77,7 +77,6 @@ in
             };
 
             exif = {
-              enabled = true;
               dateTimeOriginal = true;
               make = true;
               model = true;
@@ -89,7 +88,6 @@ in
             };
 
             location = {
-              enabled = true;
               city = true;
               state = true;
               country = true;
