@@ -24,4 +24,13 @@ creation_rules:
       - *maddie_ssh
       - *caspian
       - *dazza
-
+  - path_regex: secrets/caspian\.yaml$
+    key_groups:
+    - age:
+      - *caspian
+      - *dazza
+  - path_regex: secrets/laurie\.yaml$
+    key_groups:
+    - age:
+      - *laurie
+      - *dazza

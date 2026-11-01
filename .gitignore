@@ -9,6 +9,7 @@ result-*
 **/.nixos-test-history
 
 # Cisco installers must be supplied locally and kept out of Git.
+/binaries/
 CiscoPacketTracer_*.deb
 
 # Temporary private-key export for the password manager; never commit.

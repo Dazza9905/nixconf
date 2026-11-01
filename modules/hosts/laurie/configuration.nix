@@ -6,6 +6,7 @@
   flake.nixosModules."laurieConfiguration" = {
     pkgs,
     lib,
+    username,
     ...
   }: {
     imports = [
@@ -34,18 +35,49 @@
       };
     };
 
-    homelab.services.kvm = {
-      enable = true;
-      role = "client";
-      serverAddress = "192.168.100.26";
-      certificate = ../../../secrets/rkvm-certificate.pem;
-      passwordSopsFile = ../../../secrets/rkvm.yaml;
+    homelab.services = {
+      newt = {
+        enable = true;
+      };
+
+      t3code = {
+        enable = true;
+        user = username;
+        host = "0.0.0.0";
+        port = 3773;
+        extraPackages = with pkgs; [
+          python3
+          uv
+          nodejs
+          sqlite
+          jq
+          file
+          binutils
+          poppler-utils
+          psmisc
+          patchelf
+          ripgrep
+        ];
+      };
+
+      kvm = {
+        enable = true;
+        role = "client";
+        serverAddress = "192.168.100.26";
+        certificate = ../../../secrets/rkvm-certificate.pem;
+        passwordSopsFile = ../../../secrets/rkvm.yaml;
+      };
     };
 
+    sops.defaultSopsFile = ../../../secrets/laurie.yaml;
     # ==================================================================
     # OTHER
     # ==================================================================
     networking.hostName = "laurie";
+
+    users.users.root.openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINt6vCBvTYA+fRDNxAHc9TmYDP/eAaUlCBBsK5AUM5Ym"
+    ];
 
     programs = {
       wireshark.enable = true;
@@ -75,7 +107,7 @@
 
     # mount nas
     fileSystems."/mnt/nas" = {
-      device = "192.168.100.21:/mnt/nas-data/files-dazza";
+      device = "192.168.100.21:/mnt/860evo/files-dazza";
       fsType = "nfs";
       options = ["x-systemd.automount" "noauto"];
     };

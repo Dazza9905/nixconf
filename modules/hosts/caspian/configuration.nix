@@ -29,6 +29,8 @@
       self.nixosModules."programs-3d"
       self.nixosModules.wooting
     ];
+    sops.defaultSopsFile = ../../../secrets/caspian.yaml;
+
 
 
     services.samba = {
@@ -176,7 +178,6 @@
       age
       sops
       graphite
-      t3code
     ];
 
     system.autoUpgrade = {
