@@ -36,6 +36,7 @@
     };
 
     homelab.services = {
+      pangolin.enable = true;
       newt = {
         enable = true;
       };

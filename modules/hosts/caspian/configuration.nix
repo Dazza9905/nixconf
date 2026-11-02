@@ -14,6 +14,7 @@
       self.nixosModules.base
       self.nixosModules.devices
       self.nixosModules.desktop
+      self.nixosModules.touchControls
       self.nixosModules.remoteDesktop
       self.nixosModules.homelab
       self.nixosModules.razer
@@ -115,6 +116,8 @@
     };
 
     networking.networkmanager.enable = true;
+    networking.networkmanager.dns = "systemd-resolved";
+    services.resolved.enable = true;
     # This machine has Ethernet only; do not start an unused supplicant.
     networking.wireless.enable = lib.mkForce false;
     # Let Ethernet negotiation and DHCP finish asynchronously.  Nothing needed
@@ -126,6 +129,7 @@
     security.polkit.enable = true;
 
     homelab.services = {
+      pangolin.enable = true;
       newt = {
         enable = true;
       };
@@ -178,6 +182,7 @@
       age
       sops
       graphite
+      pangolin-cli
     ];
 
     system.autoUpgrade = {
