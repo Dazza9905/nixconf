@@ -3,7 +3,7 @@
   caspian = {
     system = "x86_64-linux";
     targetHost = "192.168.100.26";
-    targetUser = "dazza";
+    targetUser = "root";
     tags = ["desktop" "x86"];
     allowLocalDeployment = true;
   };
