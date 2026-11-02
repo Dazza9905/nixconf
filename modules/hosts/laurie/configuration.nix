@@ -20,7 +20,6 @@
       self.nixosModules.remoteDesktop
       self.nixosModules.homelab
       self.nixosModules.sops
-      self.nixosModules.kvm
       self.nixosModules.dns
 
       self.nixosModules.games
@@ -108,12 +107,32 @@
       activate-linux
     ];
 
-    # mount nas
-    fileSystems."/mnt/nas" = {
-      device = "192.168.100.21:/mnt/860evo/files-dazza";
-      fsType = "nfs";
-      options = ["x-systemd.automount" "noauto"];
+    # Mount only on access; return errors when offline instead of retrying forever.
+    # Interrupted writes can fail or leave incomplete files.
+    fileSystems = let
+      nasOptions = [
+        "noauto"
+        "nofail"
+        "x-systemd.automount"
+        "x-systemd.mount-timeout=5s"
+        "x-systemd.idle-timeout=60s"
+        "softerr"
+        "timeo=20"
+        "retrans=2"
+      ];
+    in {
+      "/mnt/nas" = {
+        device = "192.168.100.21:/mnt/860evo/files-dazza";
+        fsType = "nfs";
+        options = nasOptions;
+      };
+      "/mnt/nas-raw" = {
+        device = "192.168.100.21:/mnt/";
+        fsType = "nfs";
+        options = nasOptions;
+      };
     };
+
 
     # ==================================================================
     # WORKAROUNDS
@@ -297,114 +316,6 @@
     # supergfxd persists the GPU mode across reboots in /etc/asusd/supergfxd.conf
     # do NOT set a default mode here so manual changes (Integrated/Hybrid/etc.) survive rebuilds
     services.supergfxd.enable = true;
-
-
-    # dynamic CPU frequency + turbo boost based on load and AC/battery state
-    services.auto-cpufreq.enable = true;
-    services.auto-cpufreq.settings = {
-      battery = {
-        governor = "powersave";
-        turbo = "auto";
-      };
-      charger = {
-        governor = "performance";
-        turbo = "auto";
-      };
-    };
-
-    # Mount only on access; return errors when offline instead of retrying forever.
-    # Interrupted writes can fail or leave incomplete files.
-    fileSystems = let
-      nasOptions = [
-        "noauto"
-        "nofail"
-        "x-systemd.automount"
-        "x-systemd.mount-timeout=5s"
-        "x-systemd.idle-timeout=60s"
-        "softerr"
-        "timeo=20"
-        "retrans=2"
-      ];
-    in {
-      "/mnt/nas" = {
-        device = "192.168.100.21:/mnt/860evo/files-dazza";
-        fsType = "nfs";
-        options = nasOptions;
-      };
-      "/mnt/nas-raw" = {
-        device = "192.168.100.21:/mnt/";
-        fsType = "nfs";
-        options = nasOptions;
-      };
-    };
-
-    # SD card reader disabled — unused; caused sdhci errors on resume
-    # re-enable by uncommenting below and removing the blacklist
-    boot.blacklistedKernelModules = ["sdhci_pci"];
-    # systemd.services.sdhci-resume = {
-    #   description = "Reload sdhci_pci after resume";
-    #   after = ["suspend.target" "hibernate.target" "hybrid-sleep.target"];
-    #   wantedBy = ["suspend.target" "hibernate.target" "hybrid-sleep.target"];
-    #   serviceConfig = {
-    #     Type = "oneshot";
-    #     ExecStart = "/bin/sh -c 'modprobe -r sdhci_pci && modprobe sdhci_pci'";
-    #   };
-    # };
-
-    programs.gpt-dictate.enable = true;
-
-    # The ALC285 defaults to maximum capture gain plus 30 dB mic boost on this
-    # laptop, which clips the internal microphone into unrecognizable noise.
-    systemd.user.services.realtek-internal-mic-gain = {
-      description = "Set sane Realtek internal microphone gain";
-      wantedBy = ["graphical-session.target"];
-      after = ["pipewire.service" "wireplumber.service"];
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        ExecStart = pkgs.writeShellScript "realtek-internal-mic-gain" ''
-          ${pkgs.alsa-utils}/bin/amixer -c PCH sset 'Internal Mic Boost' 0,0
-          ${pkgs.alsa-utils}/bin/amixer -c PCH sset Capture 33,33 cap
-        '';
-      };
-    };
-    services.gnome.core-apps.enable = true;
-    users.users.dazza = {
-      isNormalUser = true;
-      description = "Daren Drahos";
-      extraGroups = ["networkmanager" "wheel" "wireshark"];
-      packages = with pkgs; [
-      ];
-    };
-    # ======================================
-    # CUSTOM SETTINGS
-    # ======================================
-    settings = {
-      enable = true;
-      dns.enable = true;
-      remoteDesktop = {
-        client = true;
-      };
-    };
-
-    networking.firewall = {
-      enable = true;
-      allowedUDPPortRanges = [
-        { from = 12000; to = 12001; }
-      ];
-    };
-
-    environment.systemPackages = with pkgs; [
-      baobab
-      wireshark
-      dig
-      net-tools
-      pangolin-cli
-      xournalpp
-      obsidian
-      cisco-packet-tracer_9
-      activate-linux
-    ];
 
     system.stateVersion = "25.05"; # Did you read the comment?
   };

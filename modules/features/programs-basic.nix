@@ -95,6 +95,7 @@
       bitwarden-cli
       codex
       obsidian
+      superfile
     ];
   };
 }
