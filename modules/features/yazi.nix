@@ -23,7 +23,7 @@
           for = "linux";
         }];
         opener.pdf = [{
-          run = "${lib.getExe pkgs.sioyek} -- %s";
+          run = "QT_QPA_PLATFORM=xcb ${lib.getExe pkgs.sioyek} -- %s";
           orphan = true;
           desc = "Sioyek";
           for = "linux";
