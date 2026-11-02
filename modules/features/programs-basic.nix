@@ -1,34 +1,11 @@
 {
   self,
-  inputs,
+  moduleWithSystem,
   ...
 }: {
-  perSystem = {pkgs, ...}: {
-    # The same editor tools on another machine, without rebuilding NixOS.
-    devShells.nix = pkgs.mkShellNoCC {
-      packages = with pkgs; [neovim nixd alejandra];
-      NIX_PATH = "nixpkgs=${inputs.nixpkgs}";
-    };
-
-    packages.clipboardImageEditor = pkgs.writeShellApplication {
-      name = "edit-clipboard-image";
-      runtimeInputs = [pkgs.satty pkgs.wl-clipboard pkgs.libnotify pkgs.coreutils];
-      text = ''
-        image=$(mktemp)
-        trap 'rm -f "$image"' EXIT
-        if ! wl-paste --type image --no-newline > "$image" || [ ! -s "$image" ]; then
-          notify-send "Clipboard Image Editor" "Copy an image first, then try again."
-          exit 1
-        fi
-        satty --filename "$image"
-      '';
-    };
-  };
-
-  flake.nixosModules.programs-basic = {
+  flake.nixosModules.programs-basic = moduleWithSystem ({self', ...}: {
     pkgs,
     lib,
-    self',
     username,
     ...
   }: {
@@ -54,7 +31,8 @@
       ];
     };
     environment.systemPackages = with pkgs; [
-      self.packages.${pkgs.stdenv.hostPlatform.system}.clipboardImageEditor
+      self'.packages.mySuperfile
+      self'.packages.clipboardImageEditor
       satty
       wl-clipboard
       github-cli
@@ -95,7 +73,6 @@
       bitwarden-cli
       codex
       obsidian
-      superfile
     ];
-  };
+  });
 }

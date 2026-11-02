@@ -2,7 +2,7 @@
   # MAIN PC
   caspian = {
     system = "x86_64-linux";
-    targetHost = "192.168.100.24";
+    targetHost = "192.168.100.26";
     targetUser = "dazza";
     tags = ["desktop" "x86"];
     allowLocalDeployment = true;
