@@ -1,0 +1,15 @@
+--- a/src/scroll.c
++++ b/src/scroll.c
+@@ -12 +12,2 @@
+-#define factor 50
++/* Wayland uses smaller continuous axis steps instead of wheel detents. */
++#define factor (getenv("WAYLAND_DISPLAY") ? 5 : 50)
+--- a/src/platform/linux/wayland/wayland.c
++++ b/src/platform/linux/wayland/wayland.c
+@@ -171,3 +171,3 @@
+-	zwlr_virtual_pointer_v1_axis_discrete(wl.ptr, 0, 0,
+-					      wl_fixed_from_int(15*direction),
+-					      direction);
++	zwlr_virtual_pointer_v1_axis_source(wl.ptr, WL_POINTER_AXIS_SOURCE_CONTINUOUS);
++	zwlr_virtual_pointer_v1_axis(wl.ptr, 0, WL_POINTER_AXIS_VERTICAL_SCROLL,
++				   wl_fixed_from_int(3 * direction) / 2);

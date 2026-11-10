@@ -1,0 +1,21 @@
+# Select quadrants in reading order: upper left/right, lower left/right.
+grid_nr: 2
+grid_nc: 2
+grid_keys: u i j k
+grid_color: #89b4fa
+grid_border_color: #cdd6f4
+grid_border_size: 2
+hint_font: monospace
+hint_size: 15
+hint2_size: 15
+hint_bgcolor: #1e1e2e
+hint_fgcolor: #cdd6f4
+cursor_color: #f38ba8
+scroll_speed: 200
+scroll_max_speed: 400
+scroll_acceleration: 300
+scroll_deceleration: -2000
+scroll_up: f
+scroll_down: d
+decelerator: s
+screen: S

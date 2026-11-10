@@ -1,0 +1,28 @@
+--- a/src/platform/linux/wayland/screen.c
++++ b/src/platform/linux/wayland/screen.c
+@@ -119,0 +120,5 @@
++	/* Refresh pointer focus without changing the pointer position. */
++	zwlr_virtual_pointer_v1_motion(wl.ptr, 0, 0, 0);
++	zwlr_virtual_pointer_v1_frame(wl.ptr);
++	wl_display_flush(wl.dpy);
++
+--- a/src/platform/linux/wayland/surface.c
++++ b/src/platform/linux/wayland/surface.c
+@@ -80,6 +80,8 @@
+ 	}
+ 
+ 	ftruncate(fd, sfc->bufsz);
++	/* Prevent another instance from truncating this shared memory object. */
++	shm_unlink(shm_path);
+ 
+ 	pool = wl_shm_create_pool(wl.shm, fd, sfc->bufsz);
+ 
+@@ -139,7 +141,7 @@
+ 					   &layer_surface_listener,
+ 					   sfc);
+ 
+-	zwlr_layer_surface_v1_set_size(sfc->wl_layer_surface, 10, 10);
++	zwlr_layer_surface_v1_set_size(sfc->wl_layer_surface, sfc->w, sfc->h);
+ 	zwlr_layer_surface_v1_set_anchor(sfc->wl_layer_surface, ZWLR_LAYER_SURFACE_V1_ANCHOR_TOP|ZWLR_LAYER_SURFACE_V1_ANCHOR_LEFT);
+ 	zwlr_layer_surface_v1_set_margin(sfc->wl_layer_surface, sfc->y, 0, 0, sfc->x);
+ 	zwlr_layer_surface_v1_set_exclusive_zone(sfc->wl_layer_surface, -1);
