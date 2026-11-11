@@ -23,8 +23,16 @@
     nix.settings.trusted-users = ["root" "${username}"];
     nixpkgs.config.allowUnfree = true;
 
-    programs.nix-ld.enable = true;
+    programs.nix-ld = {
+      enable = true;
 
+      libraries = with pkgs; [
+        stdenv.cc.cc.lib
+        zlib
+        openssl
+        libglvnd
+      ];
+    };
     nix.settings.experimental-features = ["nix-command" "flakes"];
 
     # Keep CLI package completion and language servers on our locked nixpkgs.

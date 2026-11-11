@@ -18,6 +18,7 @@
       self.nixosModules.remoteDesktop
       self.nixosModules.homelab
       self.nixosModules.razer
+      self.nixosModules.lighting
 
       self.nixosModules.gpt-dictate
 
@@ -183,6 +184,7 @@
       sops
       graphite
       pangolin-cli
+      cisco-packet-tracer_9
     ];
 
     system.autoUpgrade = {

@@ -52,6 +52,11 @@ in
       description = "T3 Code backend";
       wantedBy = ["default.target"];
       unitConfig.ConditionUser = cfg.user;
+      environment.LD_LIBRARY_PATH = lib.makeLibraryPath (with pkgs; [
+        glib nspr nss atk at-spi2-atk at-spi2-core dbus
+        libx11 libxcomposite libxdamage libxext libxfixes libxrandr
+        libgbm expat libxcb libxkbcommon systemd alsa-lib
+      ]);
       path = [
         "/etc/profiles/per-user/${cfg.user}"
         "/run/current-system/sw"
