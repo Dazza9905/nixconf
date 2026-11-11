@@ -1,26 +1,17 @@
 # Working with this configuration
 
-## Consult before adding things
+## Propose and implement
 
-- Trivial fixes with no meaningful implementation decisions may be made directly
-  without a proposal or approval. Validate them and report the result.
-- For other code changes, present a concrete proposal before editing and wait for the
-  user's approval. This includes fixes, refactors, moves, and removals, as well
-  as additions. Name the exact files, show the proposed code or a focused diff,
-  and briefly explain the reason and how it fits the existing architecture.
-- Keep proposals concise and specific enough to review. Read-only inspection
-  and evaluation may proceed before approval. Once a concrete proposal is
-  approved, implement and validate it without asking again within that scope.
-- Before adding a service, module, dependency, configuration block, or other new
-  functionality, explain the proposed change and wait for the user's approval.
-- Show a concrete code snippet, name the exact files and locations, explain why
-  the addition is needed, and describe how it connects to the existing environment.
-- A broad request to implement something does not replace this consultation.
-  Once the user approves a concrete proposal, proceed within that agreed scope
-  without repeatedly asking for confirmation.
-- For changes requiring consultation, inspect and explain first; do not make the configuration change and only then
-  present it for review. A specific request to update these instructions
-  authorizes that documentation edit.
+- Inspect relevant configuration first. Before nontrivial edits, briefly propose
+  the change, name exact files, show a focused snippet or diff when useful, and
+  explain how it fits the existing architecture.
+- Propose and then implement and validate without pausing for approval. Do not
+  require the user to say yes for fixes, refactors, moves, removals, additions,
+  services, modules, or dependencies within the requested scope.
+- The user will object if they disagree. Revert the relevant changes when asked,
+  preserving unrelated user edits.
+- Trivial fixes may be made directly. Ask only when missing information prevents
+  a sound implementation, not for routine confirmation.
 
 ## Fit the existing architecture
 

@@ -1,0 +1,20 @@
+id = "dazza/vertical-active-window"
+name = "Vertical active window"
+description = "Focused Niri window icon and title with configurable vertical text rotation."
+version = "1.0.0"
+plugin_api = 31
+author = "dazza"
+
+[[widget]]
+id = "window"
+entry = "widget.luau"
+
+[[widget.setting]]
+key = "rotation"
+type = "select"
+label_key = "rotation.label"
+default = "90"
+options = [
+  { value = "90", label_key = "rotation.clockwise" },
+  { value = "-90", label_key = "rotation.counterclockwise" },
+]
