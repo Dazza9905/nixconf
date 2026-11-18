@@ -3,14 +3,6 @@
   inputs,
   ...
 }: {
-  perSystem = {pkgs, ...}: {
-    packages.ze = pkgs.writeShellApplication {
-      name = "ze";
-      runtimeInputs = [pkgs.curl pkgs.jq];
-      text = builtins.readFile ./zen-extension.sh;
-    };
-  };
-
   flake.nixosModules.zen = {
     inputs,
     pkgs,
@@ -49,7 +41,6 @@
     };
 
     environment.systemPackages = [
-      self.packages.${pkgs.stdenv.hostPlatform.system}.ze
       (
         pkgs.wrapFirefox
         inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.zen-browser-unwrapped

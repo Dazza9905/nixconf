@@ -174,6 +174,15 @@
         # Keep DHCP DNS out of resolved: dnsproxy handles FIIT explicitly.
         dns = lib.mkForce "none";
         settings.main.systemd-resolved = false;
+        # Prefer wired LAN (.19) over Wi-Fi (.18), including subnet routes.
+        settings.connection-ethernet = {
+          match-device = "type:ethernet";
+          "ipv4.route-metric" = 100;
+        };
+        settings.connection-wifi = {
+          match-device = "type:wifi";
+          "ipv4.route-metric" = 600;
+        };
       };
       # Pangolin ignores 127.0.0.0/8 when discovering upstream resolvers.
       # This address stays on lo; it is not a DNS server exposed on Wi-Fi.

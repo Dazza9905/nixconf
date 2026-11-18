@@ -14,11 +14,9 @@
       self.nixosModules.base
       self.nixosModules.devices
       self.nixosModules.desktop
-      self.nixosModules.touchControls
       self.nixosModules.remoteDesktop
       self.nixosModules.homelab
       self.nixosModules.razer
-      self.nixosModules.lighting
 
       self.nixosModules.gpt-dictate
 
@@ -26,8 +24,6 @@
 
       self.nixosModules.games
       self.nixosModules.scripts
-      self.nixosModules.gamedev
-      # self.nixosModules.starcitizen
       self.nixosModules."programs-3d"
       self.nixosModules.wooting
     ];
@@ -184,7 +180,6 @@
       sops
       graphite
       pangolin-cli
-      cisco-packet-tracer_9
     ];
 
     system.autoUpgrade = {

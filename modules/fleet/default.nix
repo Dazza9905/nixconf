@@ -3,7 +3,7 @@
   inputs,
   ...
 }: let
-  hosts = import ./_hosts.nix;
+  hosts = self.hosts;
   specialArgs = {
     inherit inputs;
     username = "dazza";

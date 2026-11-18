@@ -117,6 +117,19 @@ in {
     })
     (lib.mkIf (cfg.role == "client") {
       services.rkvm.client.settings.server = "${cfg.serverAddress}:${toString cfg.port}";
+      # TCP keeps its original source address when routing changes. Reconnect
+      # after link events so rkvm follows the preferred available LAN route.
+      networking.networkmanager.dispatcherScripts = lib.mkIf config.networking.networkmanager.enable [
+        {
+          source = pkgs.writeShellScript "rkvm-network-change" ''
+            case "$2" in
+              up|down|dhcp4-change)
+                ${pkgs.systemd}/bin/systemctl --no-block try-restart rkvm-client.service
+                ;;
+            esac
+          '';
+        }
+      ];
       # Start asynchronously and use the stock Restart=always/RestartSec=5.
       # Waiting for Wi-Fi or the server must not delay the greeter.
       systemd.services.rkvm-client = {

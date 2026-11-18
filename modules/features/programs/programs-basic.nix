@@ -12,7 +12,6 @@
     imports = [
       self.nixosModules.zen
       self.nixosModules.yazi
-      self.nixosModules.ncspot
       self.nixosModules.btop
     ];
 

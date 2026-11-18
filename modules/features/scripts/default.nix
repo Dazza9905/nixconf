@@ -14,6 +14,20 @@
         ];
         text = builtins.readFile ./force-samsung990pro.sh;
       })
+
+      (pkgs.writeShellApplication {
+        name = "zen-extension";
+        runtimeInputs = with pkgs; [
+          bash
+          coreutils
+          gnugrep
+          ntfs3g
+          procps
+          systemd
+          util-linux
+        ];
+        text = builtins.readFile ./zen-extension.sh;
+      })
     ];
   };
 }

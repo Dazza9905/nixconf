@@ -1,3 +1,0 @@
-sudo systemctl stop systemd-timesyncd.service
-sudo timedatectl set-time "2026-11-11 14:16:01"
-sudo systemctl start systemd-timesyncd.service

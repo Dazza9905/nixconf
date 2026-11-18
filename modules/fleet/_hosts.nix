@@ -1,42 +1,44 @@
-{
-  # MAIN PC
-  caspian = {
-    system = "x86_64-linux";
-    targetHost = "192.168.100.26";
-    targetUser = "root";
-    tags = ["desktop" "x86"];
-    allowLocalDeployment = true;
-  };
+{ ... }: {
+  flake.hosts = {
+    # MAIN PC
+    caspian = {
+      system = "x86_64-linux";
+      targetHost = "192.168.100.26";
+      targetUser = "root";
+      tags = ["desktop" "x86"];
+      allowLocalDeployment = true;
+    };
 
-  # NOTEBOOK
-  laurie = { 
-    system = "x86_64-linux";
-    targetHost = "192.168.100.18";
-    targetUser = "root";
-    tags = ["laptop" "x86"];
-    allowLocalDeployment = true;
-  };
+    # NOTEBOOK
+    laurie = { 
+      system = "x86_64-linux";
+      targetHost = "192.168.100.18";
+      targetUser = "root";
+      tags = ["laptop" "x86"];
+      allowLocalDeployment = true;
+    };
 
-  # HOMELAB SERVER
-  maddie = {
-    system = "aarch64-linux";
-    targetHost = "192.168.100.21";
-    targetUser = "root";
-    tags = ["server" "arm"];
-    allowLocalDeployment = false;
-  };
+    # HOMELAB SERVER
+    maddie = {
+      system = "aarch64-linux";
+      targetHost = "192.168.100.21";
+      targetUser = "root";
+      tags = ["server" "arm"];
+      allowLocalDeployment = false;
+    };
 
-  # PUBLIC PROXY - DEBIAN
-  safesurf = { 
-    system = "x86_64-linux";
-    targetHost = "37.120.189.13";
-    targetUser = "root";
-    tags = ["server" "vps"];
-    allowLocalDeployment = false;
-  };
+    # PUBLIC PROXY - DEBIAN
+    # safesurf = { 
+    #   system = "x86_64-linux";
+    #   targetHost = "37.120.189.13";
+    #   targetUser = "root";
+    #   tags = ["server" "vps"];
+    #   allowLocalDeployment = false;
+    # };
 
-  # GAMESERVER
-  # david = {
-  #   ...
-  # };
+    # GAMESERVER
+    # david = {
+    #   ...
+    # };
+  };
 }

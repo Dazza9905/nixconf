@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 let
@@ -41,7 +40,7 @@ in
     };
     services.immich-public-proxy = {
       enable = cfg.ipp;
-      immichUrl = "http://192.168.100.21:2283";
+      immichUrl = "http://127.0.0.1:2283";
       openFirewall = true;
       settings = {
         ipp = {
